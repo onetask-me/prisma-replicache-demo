@@ -8,7 +8,7 @@ import todoDelete from 'resolvers/todo/delete'
 import todoGet from 'resolvers/todo/get'
 import todoUpdate from 'resolvers/todo/update'
 
-const HooksAppReplicache = () => {
+const HooksReplicache = () => {
 	const { user } = useUser()
 
 	const [rep, setRep] = useState(null)
@@ -37,4 +37,4 @@ const HooksAppReplicache = () => {
 	return { data: rep }
 }
 
-export default HooksAppReplicache
+export default HooksReplicache
