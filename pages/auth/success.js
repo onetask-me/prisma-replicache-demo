@@ -1,6 +1,6 @@
 // Packages
 import { useEffect } from 'react'
-import { useAuth, SignInButton } from '@clerk/nextjs'
+import { useAuth } from '@clerk/nextjs'
 import { useRouter } from 'next/router'
 
 const PagesAuthSuccess = () => {
@@ -19,7 +19,7 @@ const PagesAuthSuccess = () => {
 					}
 				})
 
-				const { data, error } = await response.json()
+				const { data } = await response.json()
 
 				if (data) router.push('/replicache')
 			}

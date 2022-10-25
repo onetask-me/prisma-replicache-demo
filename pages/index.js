@@ -1,6 +1,6 @@
 // Packages
 import { useEffect } from 'react'
-import { useAuth, SignInButton } from '@clerk/nextjs'
+import { useAuth, SignUpButton } from '@clerk/nextjs'
 import { useRouter } from 'next/router'
 
 const Pages = () => {
@@ -12,7 +12,7 @@ const Pages = () => {
 		if (isSignedIn) router.push('/replicache')
 	}, [isSignedIn])
 
-	return <SignInButton redirectUrl='/auth/success' />
+	return <SignUpButton redirectUrl='/auth/success' />
 }
 
 export default Pages
