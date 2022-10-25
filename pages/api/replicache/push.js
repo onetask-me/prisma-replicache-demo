@@ -14,14 +14,10 @@ import utilAuth from 'utils/auth'
 import utilGenerateId from 'utils/generateId'
 
 const PagesApiReplicachePush = async (req, res) => {
-	console.log('\nPush: ***')
-	console.log(req.body)
-	console.log('Push: ***\n')
+	console.log('\nPush: ***', req.body, '***\n')
 
 	const { data: authUser, error: authUserErr } = await utilAuth(req, res)
 	if (authUserErr) res.json({ error: authUserErr })
-
-	const { userId } = authUser
 
 	const { clientID, mutations, spaceID } = req.body
 
@@ -47,12 +43,8 @@ const PagesApiReplicachePush = async (req, res) => {
 					break
 				}
 
-				console.log('Processing mutation:', JSON.stringify(mutation))
-
-				console.log('Version:', nextMutationId)
-
 				// Mutations
-				await utilApiPushMutations({ mutation, nextMutationId, tx, userId })
+				await utilApiPushMutations({ mutation, nextMutationId, tx, userId: authUser.userId })
 
 				lastMutationId = nextMutationId
 			}

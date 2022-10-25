@@ -8,9 +8,7 @@ import prisma from 'utils/prisma'
 import utilAuth from 'utils/auth'
 
 const PagesApiReplicachePull = async (req, res) => {
-	console.log('\nPull: ***')
-	console.log(req.body)
-	console.log('Pull: ***\n')
+	console.log('\nPull: ***', req.body, '***\n')
 
 	const { data: authUser, error: authUserErr } = await utilAuth(req, res)
 	if (authUserErr) res.json({ error: authUserErr })
