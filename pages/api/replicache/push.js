@@ -16,36 +16,32 @@ const PagesApiReplicachePush = async (req, res) => {
 	const { data: authUser, error: authUserErr } = await utilAuth(req, res)
 	if (authUserErr) res.json({ error: authUserErr })
 
+	const { clientID, mutations, spaceID } = req.body
+
 	try {
 		await prisma.$transaction(async tx => {
-			let lastMutationId
+			// #1. Get next `version` for Replicache Space
+			let versionNext
 
-			const prismaReplicacheClientFindUnique = await tx.replicacheClient.findUnique({
-				where: {
-					clientId: req.body.clientID
-				},
-				select: {
-					lastMutationId: true
-				}
+			const prismaReplicacheSpaceFindUnique = await tx.replicacheSpace.findUnique({
+				where: { spaceId: spaceID },
+				select: { version: true }
 			})
 
-			if (prismaReplicacheClientFindUnique)
-				lastMutationId = prismaReplicacheClientFindUnique.lastMutationId
-			else {
-				const prismaReplicacheClientCreate = await tx.replicacheClient.create({
-					data: {
-						clientId: req.body.clientID,
-						lastMutationId: 0
-					},
-					select: {
-						lastMutationId: true
-					}
-				})
+			if (!prismaReplicacheSpaceFindUnique) res.json({ error: `Unknown space ${spaceID}` })
 
-				lastMutationId = prismaReplicacheClientCreate.lastMutationId
-			}
+			versionNext = prismaReplicacheSpaceFindUnique.version + 1
 
-			for (const mutation of req.body.mutations) {
+			// #2. Get last mutation Id for client
+			const prismaReplicacheClientFindUnique = await tx.replicacheClient.findUnique({
+				where: { clientId: clientID },
+				select: { lastMutationId: true }
+			})
+
+			const lastMutationId = prismaReplicacheClientFindUnique?.lastMutationId ?? 0
+
+			// #3. Iterate mutations, increase mutation Id on each iteration
+			for (const mutation of mutations) {
 				const t1 = Date.now()
 
 				const expectedMutationId = lastMutationId + 1
@@ -64,11 +60,14 @@ const PagesApiReplicachePush = async (req, res) => {
 
 				console.log('Version:', expectedMutationId)
 
+				// Mutation
 				switch (mutation.name) {
 					case 'create':
 						await tx.todo.create({
 							data: {
+								// --- RELATIONS ---
 								User: { connect: { userId: authUser.userId } },
+								// --- FIELDS ---
 								...mutation.args,
 								lastModifiedVersion: expectedMutationId
 							}
@@ -84,22 +83,25 @@ const PagesApiReplicachePush = async (req, res) => {
 				console.log('Processed mutation in', Date.now() - t1)
 			}
 
-			console.log('Setting', req.body.clientID, 'lastMutationId to', lastMutationId)
+			// #4. Save mutation Id to Client
+			console.log('Setting', clientID, 'lastMutationId to', lastMutationId)
 
 			const prismaReplicacheClientUpdate = await tx.replicacheClient.update({
-				where: {
-					clientId: req.body.clientID
-				},
-				data: {
-					lastMutationId
-				}
+				where: { clientId: clientID },
+				data: { lastMutationId }
+			})
+
+			// #5. Save new version to Space
+			await tx.replicacheSpace.update({
+				where: { spaceId: spaceID },
+				data: { version: versionNext }
 			})
 		})
 
-		// We need to use `await` here, otherwise Next.js will frequently kill the request and the poke won't get sent.
+		// #6. We need to use `await` here, otherwise Next.js will frequently kill the request and the poke won't get sent.
 		console.log('Poke')
 
-		return res.json({ done: true })
+		res.json({ done: true })
 	} catch (err) {
 		console.error(err)
 
