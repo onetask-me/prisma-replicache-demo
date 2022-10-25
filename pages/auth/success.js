@@ -3,16 +3,22 @@ import { useEffect } from 'react'
 import { useAuth, SignInButton } from '@clerk/nextjs'
 import { useRouter } from 'next/router'
 
-const Pages = () => {
+const PagesAuthSuccess = () => {
 	const router = useRouter()
 
 	const { isSignedIn } = useAuth()
 
 	useEffect(() => {
-		if (isSignedIn) router.push('/replicache')
+		;(async () => {
+			if (isSignedIn) {
+				const { data: user } = await fetch('/api/auth')
+
+				if (user) router.push('/replicache')
+			}
+		})()
 	}, [isSignedIn])
 
-	return <SignInButton afterSignUpUrl='/auth/success' />
+	return <></>
 }
 
-export default Pages
+export default PagesAuthSuccess

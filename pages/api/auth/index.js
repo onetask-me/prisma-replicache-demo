@@ -3,7 +3,7 @@ import { withAuth, users } from '@clerk/nextjs/api'
 // Utilities
 import prisma from 'utils/prisma'
 
-const PagesApiLogin = withAuth(async (req, _) => {
+const PagesApiAuth = withAuth(async (req, _) => {
 	const { sessionId, userId } = req.auth
 
 	if (!sessionId || !userId) return { error: 'not_signed_in' }
@@ -25,4 +25,4 @@ const PagesApiLogin = withAuth(async (req, _) => {
 	return { data: clerkUser }
 })
 
-export default PagesApiLogin
+export default PagesApiAuth

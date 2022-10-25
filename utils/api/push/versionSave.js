@@ -1,4 +1,4 @@
-const UtilsApiPushVersionGet = async ({ tx, userId version }) =>
+const UtilsApiPushVersionGet = async ({ tx, userId, version }) =>
 	await tx.replicacheSpace.update({
 		where: { spaceId: userId },
 		data: { version }
