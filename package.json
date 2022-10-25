@@ -13,10 +13,10 @@
 	},
 	"scripts": {
 		"next": "pscale connect lifeproductivityapp dev --execute-protocol 'mysql' --execute-env-url 'APP_DB' --execute 'doppler run -- next'",
-		"push": "pscale connect lifeproductivityapp dev --execute-protocol 'mysql' --execute-env-url 'APP_DB' --execute 'doppler run -- prisma db push --schema=./prisma/dev/schema.prisma --force-reset'"
+		"push": "pscale connect lifeproductivityapp dev --execute-protocol 'mysql' --execute-env-url 'APP_DB' --execute 'doppler run -- prisma db push --schema=./prisma/schema.prisma --force-reset'"
 	},
 	"prisma": {
-		"schema": "./prisma/dev/schema.prisma"
+		"schema": "./prisma/schema.prisma"
 	},
 	"dependencies": {
 		"@clerk/clerk-js": "^4.11.0",
