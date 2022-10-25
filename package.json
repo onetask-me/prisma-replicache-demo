@@ -13,7 +13,7 @@
 	},
 	"scripts": {
 		"next": "pscale connect lifeproductivityapp dev --execute-protocol 'mysql' --execute-env-url 'APP_DB' --execute 'doppler run -- next'",
-		"push": "pscale connect lifeproductivityapp dev --execute-protocol 'mysql' --execute-env-url 'APP_DB' --execute 'doppler run -- prisma db push --schema=./prisma/schema.prisma --force-reset'",
+		"reset": "pscale connect lifeproductivityapp dev --execute-protocol 'mysql' --execute-env-url 'APP_DB' --execute 'doppler run -- prisma db push --schema=./prisma/schema.prisma --force-reset'",
 		"studio": "pscale connect lifeproductivityapp dev --execute-protocol 'mysql' --execute-env-url 'APP_DB' --execute 'doppler run -- prisma studio --schema=./prisma/schema.prisma'"
 	},
 	"prisma": {
