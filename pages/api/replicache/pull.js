@@ -1,8 +1,3 @@
-// Replicache
-import todoCreate from 'resolvers/todo/create'
-import todoDelete from 'resolvers/todo/delete'
-import todoGet from 'resolvers/todo/get'
-import todoUpdate from 'resolvers/todo/update'
 // Utilities
 import prisma from 'utils/prisma'
 import utilAuth from 'utils/auth'
