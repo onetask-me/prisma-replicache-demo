@@ -70,7 +70,7 @@ const PagesApiReplicachePush = async (req, res) => {
 							data: {
 								User: { connect: { userId: authUser.userId } },
 								...mutation.args,
-								replicacheVersion: expectedMutationId
+								lastModifiedVersion: expectedMutationId
 							}
 						})
 						break
