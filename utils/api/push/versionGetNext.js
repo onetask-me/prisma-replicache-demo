@@ -1,10 +1,10 @@
-const UtilsApiPushVersionGet = async ({ spaceID, tx }) => {
+const UtilsApiPushVersionGet = async ({ tx, userId }) => {
 	const prismaReplicacheSpaceFindUnique = await tx.replicacheSpace.findUnique({
-		where: { spaceId: spaceID },
+		where: { spaceId: userId },
 		select: { version: true }
 	})
 
-	if (!prismaReplicacheSpaceFindUnique) return { error: `Unknown space ${spaceID}` }
+	if (!prismaReplicacheSpaceFindUnique) return { error: `Unknown space ${userId}` }
 
 	return { data: prismaReplicacheSpaceFindUnique.version + 1 }
 }

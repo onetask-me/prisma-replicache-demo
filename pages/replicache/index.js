@@ -8,15 +8,7 @@ import useReplicache from 'hooks/replicache'
 const PagesReplicache = () => {
 	const { data: rep } = useReplicache()
 
-	const todos = useSubscribe(
-		rep,
-		async tx => {
-			const todos = await tx.scan({ prefix: `todo/` }).toArray()
-
-			return todos
-		},
-		[rep]
-	)
+	const todos = useSubscribe(rep, async tx => await tx.scan({ prefix: `todo/` }).toArray(), [rep])
 
 	const handleNewItem = text =>
 		rep.mutate.create({ todoId: utilGenerateId(), name: text, isDraft: false })
