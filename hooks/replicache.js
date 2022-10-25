@@ -14,9 +14,9 @@ const HooksReplicache = () => {
 	const [rep, setRep] = useState(null)
 
 	useEffect(() => {
-		if (user?.publicMetadata?.userId) {
+		if (user?.id) {
 			const r = new Replicache({
-				name: user.publicMetadata.userId,
+				name: user.id,
 				licenseKey: process.env.NEXT_PUBLIC_REPLICACHE,
 				pushURL: '/api/replicache/push',
 				pullURL: '/api/replicache/pull',
@@ -32,7 +32,7 @@ const HooksReplicache = () => {
 
 			return () => void r.close()
 		}
-	}, [user?.publicMetadata?.userId])
+	}, [user?.id])
 
 	return { data: rep }
 }

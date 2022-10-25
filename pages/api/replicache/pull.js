@@ -25,11 +25,11 @@ const PagesApiReplicachePull = async (req, res) => {
 
 			const prismaTodoFindMany = await tx.todo.findMany({
 				where: {
-					AND: [{ replicacheVersion: { gt: req.body.cookie || 0 } }, { userId: authUser?.userId }]
+					AND: [{ lastModifiedVersion: { gt: req.body.cookie || 0 } }, { userId: authUser?.userId }]
 				},
 				select: {
 					// --- SYSTEM ---
-					replicacheVersion: true,
+					lastModifiedVersion: true,
 					// --- PUBLIC ID ---
 					todoId: true,
 					// --- FIELDS ---
@@ -39,7 +39,7 @@ const PagesApiReplicachePull = async (req, res) => {
 			})
 
 			const replicacheVersion = prismaTodoFindMany?.length
-				? Math.max(...prismaTodoFindMany?.map(x => x.replicacheVersion))
+				? Math.max(...prismaTodoFindMany?.map(x => x.lastModifiedVersion))
 				: 0
 
 			const patch = []
