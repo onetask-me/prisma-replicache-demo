@@ -53,8 +53,6 @@ const PagesApiReplicachePull = async (req, res) => {
 			console.log({ lastMutationId, cookie: replicacheVersion, patch })
 
 			res.json({ lastMutationId, cookie: replicacheVersion, patch })
-
-			res.end()
 		})
 	} catch (err) {
 		console.error(err)
