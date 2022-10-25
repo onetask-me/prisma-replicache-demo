@@ -3,7 +3,7 @@ import { withAuth, users } from '@clerk/nextjs/api'
 // Utilities
 import prisma from 'utils/prisma'
 
-const PagesApiAuth = withAuth(async (req, _) => {
+const PagesApiAuth = withAuth(async (req, res) => {
 	const { sessionId, userId } = req.auth
 
 	if (!sessionId || !userId) return { error: 'not_signed_in' }
@@ -18,11 +18,14 @@ const PagesApiAuth = withAuth(async (req, _) => {
 
 	await prisma.user.upsert({
 		where: { userId: clerkUser.id },
-		create: { email },
+		create: {
+			userId: clerkUser.id,
+			email
+		},
 		update: { email }
 	})
 
-	return { data: clerkUser }
+	res.json({ data: clerkUser })
 })
 
 export default PagesApiAuth

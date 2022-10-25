@@ -11,9 +11,17 @@ const PagesAuthSuccess = () => {
 	useEffect(() => {
 		;(async () => {
 			if (isSignedIn) {
-				const { data: user } = await fetch('/api/auth')
+				const response = await fetch('/api/auth', {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						Accept: 'application/json'
+					}
+				})
 
-				if (user) router.push('/replicache')
+				const { data, error } = await response.json()
+
+				if (data) router.push('/replicache')
 			}
 		})()
 	}, [isSignedIn])

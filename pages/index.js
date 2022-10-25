@@ -12,7 +12,7 @@ const Pages = () => {
 		if (isSignedIn) router.push('/replicache')
 	}, [isSignedIn])
 
-	return <SignInButton afterSignUpUrl='/auth/success' />
+	return <SignInButton redirectUrl='/auth/success' />
 }
 
 export default Pages
