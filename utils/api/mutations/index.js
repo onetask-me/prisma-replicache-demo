@@ -1,12 +1,12 @@
 // Utilities
-import utilApiPushMutationsCreate from 'utils/api/push/mutations/create'
+import utilApiMutationsCreate from 'utils/api/mutations/create'
 
 const UtilsApiPushMutations = async ({ mutation, nextMutationId, tx, userId }) => {
 	console.log('Processing mutation', nextMutationId, JSON.stringify(mutation))
 
 	switch (mutation.name) {
 		case 'create':
-			await utilApiPushMutationsCreate({ args: mutation.args, nextMutationId, tx, userId })
+			await utilApiMutationsCreate({ args: mutation.args, nextMutationId, tx, userId })
 			break
 
 		// ...other mutations, tbd

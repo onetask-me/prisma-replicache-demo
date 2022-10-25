@@ -1,10 +1,10 @@
 // Utilities
 import prisma from 'utils/prisma'
-import utilApiPushVersionGetNext from 'utils/api/push/versionGetNext'
-import utilApiPushVersionSave from 'utils/api/push/versionSave'
-import utilApiPushLastMutationIdGet from 'utils/api/push/lastMutationIdGet'
-import utilApiPushLastMutationIdSave from 'utils/api/push/lastMutationIdSave'
-import utilApiPushMutations from 'utils/api/push/mutations'
+import utilApiLastMutationIdGet from 'utils/api/lastMutationIdGet'
+import utilApiLastMutationIdSave from 'utils/api/lastMutationIdSave'
+import utilApiVersionGetNext from 'utils/api/versionGetNext'
+import utilApiVersionSave from 'utils/api/versionSave'
+import utilApiMutations from 'utils/api/mutations'
 import utilAuth from 'utils/auth'
 
 const PagesApiReplicachePush = async (req, res) => {
@@ -20,10 +20,10 @@ const PagesApiReplicachePush = async (req, res) => {
 	try {
 		await prisma.$transaction(async tx => {
 			// #1. Get next `version` for Replicache Space
-			const { data: versionNext } = await utilApiPushVersionGetNext({ tx, userId })
+			const { data: versionNext } = await utilApiVersionGetNext({ tx, userId })
 
 			// #2. Get last mutation Id for client
-			let { data: lastMutationId } = await utilApiPushLastMutationIdGet({ clientID, tx })
+			let { data: lastMutationId } = await utilApiLastMutationIdGet({ clientID, tx })
 
 			// #3. Iterate mutations, increase mutation Id on each iteration
 			for (const mutation of mutations) {
@@ -40,16 +40,16 @@ const PagesApiReplicachePush = async (req, res) => {
 				}
 
 				// Perform mutations
-				await utilApiPushMutations({ mutation, nextMutationId, tx, userId })
+				await utilApiMutations({ mutation, nextMutationId, tx, userId })
 
 				lastMutationId = nextMutationId
 			}
 
 			// #4. Save mutation Id to Client
-			await utilApiPushLastMutationIdSave({ clientID, tx })
+			await utilApiLastMutationIdSave({ clientID, tx })
 
 			// #5. Save new version to Space
-			await utilApiPushVersionSave({ tx, userId, version: versionNext })
+			await utilApiVersionSave({ tx, userId, version: versionNext })
 		})
 
 		// #6. We need to use `await` here, otherwise Next.js will frequently kill the request and the poke won't get sent.

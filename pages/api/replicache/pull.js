@@ -1,5 +1,6 @@
 // Utilities
 import prisma from 'utils/prisma'
+import utilApiLastMutationIdGet from 'utils/api/lastMutationIdGet'
 import utilAuth from 'utils/auth'
 
 const PagesApiReplicachePull = async (req, res) => {
@@ -8,24 +9,16 @@ const PagesApiReplicachePull = async (req, res) => {
 	const { data: authUser, error: authUserErr } = await utilAuth(req, res)
 	if (authUserErr) res.json({ error: authUserErr })
 
+	const { clientID, cookie } = req.body
+
 	try {
 		await prisma.$transaction(async tx => {
-			let lastMutationId
-
-			const prismaReplicacheClientFindUnique = await tx.replicacheClient.findUnique({
-				where: {
-					clientId: req.body.clientID
-				},
-				select: {
-					lastMutationId: true
-				}
-			})
-
-			lastMutationId = prismaReplicacheClientFindUnique?.lastMutationId || 0
+			// #1. Get last mutation Id for client
+			let { data: lastMutationId } = await utilApiLastMutationIdGet({ clientID, tx })
 
 			const prismaTodoFindMany = await tx.todo.findMany({
 				where: {
-					AND: [{ lastModifiedVersion: { gt: req.body.cookie || 0 } }, { userId: authUser?.userId }]
+					AND: [{ lastModifiedVersion: { gt: cookie || 0 } }, { userId: authUser?.userId }]
 				},
 				select: {
 					// --- SYSTEM ---
@@ -44,7 +37,7 @@ const PagesApiReplicachePull = async (req, res) => {
 
 			const patch = []
 
-			if (req.body.cookie === null) patch.push({ op: 'clear' })
+			if (cookie === null) patch.push({ op: 'clear' })
 
 			patch.push(
 				...prismaTodoFindMany.map(todo => ({
