@@ -1,7 +1,7 @@
 // Packages
 import { withAuth, users } from '@clerk/nextjs/api'
 
-const ApisUtilsAuthVerify = withAuth(async (req, _) => {
+const UtilsAuth = withAuth(async (req, _) => {
 	const { sessionId, userId } = req.auth
 
 	if (!sessionId || !userId) return { error: 'not_signed_in' }
@@ -13,4 +13,4 @@ const ApisUtilsAuthVerify = withAuth(async (req, _) => {
 	return { data: clerkUser }
 })
 
-export default ApisUtilsAuthVerify
+export default UtilsAuth
