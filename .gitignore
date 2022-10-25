@@ -1,0 +1,7 @@
+# General
+.DS_Store
+node_modules/
+
+# Next & Vercel
+.next/
+.vercel/

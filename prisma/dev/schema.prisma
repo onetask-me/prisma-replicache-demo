@@ -1,0 +1,67 @@
+generator client {
+  provider        = "prisma-client-js"
+  binaryTargets   = ["native", "rhel-openssl-1.0.x"]
+  previewFeatures = ["interactiveTransactions", "referentialIntegrity"]
+}
+
+datasource db {
+  provider          = "mysql"
+  url               = env("APP_DB")
+  shadowDatabaseUrl = env("APP_DB_SHADOW")
+  relationMode      = "prisma"
+}
+
+model ReplicacheClient {
+  id             String   @id @default(uuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  // --- PUBLIC ID ---
+  clientId       String   @unique
+  // --- FIELDS ---
+  lastMutationId Int
+}
+
+model ReplicacheSpace {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // --- PUBLIC ID ---
+  spaceId   String   @unique
+  // --- FIELDS ---
+  version   Int
+}
+
+model Todo {
+  // --- SYSTEM ---
+  id                String   @id @default(uuid())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  replicacheVersion Int      @default(0)
+  // --- PUBLIC ID ---
+  todoId            String   @unique
+  // --- RELATIONS ---
+  User              User     @relation("RUserToTodos", fields: [userId], references: [userId], onDelete: Cascade)
+  userId            String
+  // --- FIELDS ---
+  isArchived        Boolean  @default(false)
+  name              String?
+  sortOrder         Int?
+
+  @@index([todoId])
+  @@index([userId])
+}
+
+model User {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // --- PUBLIC ID ---
+  userId    String   @unique
+  // --- RELATIONS ---
+  Todos     Todo[]   @relation("RUserToTodos")
+  // --- FIELDS ---
+  email     String   @unique
+
+  @@index([email])
+  @@index([userId])
+}

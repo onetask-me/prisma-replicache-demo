@@ -1,0 +1,46 @@
+{
+	"name": "replicache-prisma-nextjs",
+	"productName": "Replicache Demo using Prisma and NextJS",
+	"version": "1.0.0",
+	"description": "Replicache is a JavaScript framework for building high-performance, offline-capable, collaborative web apps.",
+	"author": "Martin Adams <heymartinadams@users.noreply.github.com>",
+	"private": false,
+	"license": "MIT",
+	"homepage": "./",
+	"repository": {
+		"url": "https://github.com/ConsciousApps/replicache-demo.git",
+		"type": "git"
+	},
+	"scripts": {
+		"next": "pscale connect lifeproductivityapp dev --execute-protocol 'mysql' --execute-env-url 'APP_DB' --execute 'doppler run -- next'",
+		"push": "pscale connect lifeproductivityapp dev --execute-protocol 'mysql' --execute-env-url 'APP_DB' --execute 'doppler run -- prisma db push --schema=./prisma/dev/schema.prisma --force-reset'"
+	},
+	"prisma": {
+		"schema": "./prisma/dev/schema.prisma"
+	},
+	"dependencies": {
+		"@clerk/clerk-js": "^4.11.0",
+		"@clerk/nextjs": "^4.5.4",
+		"@prisma/client": "^4.5.0",
+		"nanoid": "^3.3.4",
+		"next": "^12.3.1",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"replicache": "^11.2.0",
+		"replicache-react": "^2.10.0"
+	},
+	"devDependencies": {
+		"prisma": "^4.5.0"
+	},
+	"prettier": {
+		"arrowParens": "avoid",
+		"jsxSingleQuote": true,
+		"printWidth": 100,
+		"semi": false,
+		"singleQuote": true,
+		"trailingComma": "none",
+		"useEditorConfig": false,
+		"useTabs": true,
+		"overrides": []
+	}
+}
