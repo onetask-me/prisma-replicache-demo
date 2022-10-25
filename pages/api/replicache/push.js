@@ -43,7 +43,7 @@ const PagesApiReplicachePush = async (req, res) => {
 					break
 				}
 
-				// Mutations
+				// Perform mutations
 				await utilApiPushMutations({ mutation, nextMutationId, tx, userId: authUser.userId })
 
 				lastMutationId = nextMutationId
