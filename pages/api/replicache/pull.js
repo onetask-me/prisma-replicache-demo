@@ -11,6 +11,8 @@ const PagesApiReplicachePull = async (req, res) => {
 
 	const { clientID, cookie } = req.body
 
+	const { spaceId } = req.query
+
 	try {
 		await prisma.$transaction(async tx => {
 			// #1. Get last mutation Id for client
@@ -52,7 +54,7 @@ const PagesApiReplicachePull = async (req, res) => {
 
 			console.log({ lastMutationId, cookie: replicacheVersion, patch })
 
-			res.json({ lastMutationId, cookie: replicacheVersion, patch })
+			res.json({ lastMutationID: lastMutationId, cookie: replicacheVersion, patch })
 		})
 	} catch (err) {
 		console.error(err)

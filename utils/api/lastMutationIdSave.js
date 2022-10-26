@@ -1,4 +1,4 @@
-const UtilsApiPushLastMutationIdSave = async ({ clientID, tx }) => {
+const UtilsApiPushLastMutationIdSave = async ({ clientID, lastMutationId, tx }) => {
 	console.log('Setting', clientID, 'lastMutationId to', lastMutationId)
 
 	await tx.replicacheClient.update({

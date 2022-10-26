@@ -3,23 +3,25 @@ import { useState, useEffect } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { Replicache } from 'replicache'
 // Replicache
-import todoCreate from 'resolvers/todo/create'
-import todoDelete from 'resolvers/todo/delete'
-import todoGet from 'resolvers/todo/get'
-import todoUpdate from 'resolvers/todo/update'
+import todoCreate from 'mutations/todo/create'
+import todoDelete from 'mutations/todo/delete'
+import todoGet from 'mutations/todo/get'
+import todoUpdate from 'mutations/todo/update'
 
 const HooksReplicache = () => {
 	const { user } = useUser()
 
 	const [rep, setRep] = useState(null)
 
+	const spaceId = 'myCircle'
+
 	useEffect(() => {
 		if (user?.id) {
 			const r = new Replicache({
-				name: user.id,
+				name: `${user.id}/${spaceId}`,
 				licenseKey: process.env.NEXT_PUBLIC_REPLICACHE,
-				pushURL: '/api/replicache/push',
-				pullURL: '/api/replicache/pull',
+				pushURL: `/api/replicache/push?spaceId=${spaceId}`,
+				pullURL: `/api/replicache/pull?spaceId=${spaceId}`,
 				mutators: {
 					create: todoCreate,
 					delete: todoDelete,
@@ -32,7 +34,7 @@ const HooksReplicache = () => {
 
 			return () => void r.close()
 		}
-	}, [user?.id])
+	}, [user?.id, spaceId])
 
 	return { data: rep }
 }

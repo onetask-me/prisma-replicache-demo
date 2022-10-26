@@ -1,5 +1,5 @@
 // Replicache
-import todoGet from 'resolvers/todo/get'
+import todoGet from 'mutations/todo/get'
 
 const ResolversTodoCreate = async (tx, todo) => {
 	const todos = await todoGet(tx)

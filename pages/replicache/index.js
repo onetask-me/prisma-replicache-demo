@@ -31,22 +31,20 @@ const PagesReplicache = () => {
 	console.log('Todos:', todos)
 
 	return (
-		<>
+		<div>
 			<button onClick={() => signOut()}>Sign out</button>
 
-			<div className='cursor-pointer' onClick={() => handleNewItem('yo')}>
-				Create new
-			</div>
+			<button onClick={() => handleNewItem('yo')}>Create new</button>
 
 			{todos?.some(x => x)
 				? todos?.map(todo => (
-						<div key={todo.todoId} onClick={() => handleDeleteTodos(todo.todoId)}>
+						<p key={todo.todoId} onClick={() => handleDeleteTodos(todo.todoId)}>
 							<b>{todo.todoId}: </b>
 							{todo.name}
-						</div>
+						</p>
 				  ))
 				: null}
-		</>
+		</div>
 	)
 }
 
