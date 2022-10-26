@@ -24,7 +24,12 @@ const PagesApiAuth = withAuth(async (req, res) => {
 			// --- PUBLIC ID ---
 			userId: clerkUser.id,
 			// --- RELATIONS ---
-			Spaces: { connectOrCreate: { spaceId } },
+			Spaces: {
+				connectOrCreate: {
+					where: { spaceId },
+					create: { spaceId }
+				}
+			},
 			// --- FIELDS ---
 			email
 		},
