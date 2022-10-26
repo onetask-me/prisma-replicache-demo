@@ -21,9 +21,6 @@ const PagesReplicache = () => {
 
 	const todos = useSubscribe(rep, async tx => await tx.scan({ prefix: `todo/` }).toArray(), [rep])
 
-	const handleNewItem = text =>
-		rep.mutate.create({ todoId: utilGenerateId(), isArchived: false, isDraft: false, name: text })
-
 	const handleUpdateTodo = update => rep.mutate.update(update)
 
 	const handleDeleteTodos = async todoId => await rep.mutate.delete(todoId)
@@ -34,7 +31,18 @@ const PagesReplicache = () => {
 		<div>
 			<button onClick={() => signOut()}>Sign out</button>
 
-			<button onClick={() => handleNewItem('yo')}>Create new</button>
+			<button
+				onClick={() =>
+					rep.mutate.create({
+						todoId: utilGenerateId(),
+						isArchived: false,
+						isDraft: false,
+						name: `To-do #${todos?.length + 1}`
+					})
+				}
+			>
+				Create new
+			</button>
 
 			{todos?.some(x => x)
 				? todos?.map(todo => (

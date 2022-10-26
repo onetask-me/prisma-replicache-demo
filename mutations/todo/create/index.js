@@ -1,16 +1,11 @@
-// Replicache
-import todoGet from 'mutations/todo/get'
-
-const ResolversTodoCreate = async (tx, todo) => {
-	const key = `todo/${todo.todoId}`
+const ResolversTodoCreate = async (tx, args) => {
+	const key = `todo/${args.todoId}`
 
 	if (await tx.has(key)) throw new Error('Todo already exists')
 
-	const todos = await todoGet(tx)
+	console.log('Create todo:', args)
 
-	console.log('Create todo:', todo)
-
-	await tx.put(key, { ...todo, name: `#${todos?.length + 1} ${todo.name}`, sortOrder: 0 })
+	await tx.put(key, args)
 }
 
 export default ResolversTodoCreate

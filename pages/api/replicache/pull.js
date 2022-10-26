@@ -8,7 +8,7 @@ const PagesApiReplicachePull = async (req, res) => {
 	console.log('\nPull: ***', req.body, '***\n')
 
 	const { error: authUserErr } = await utilAuth(req, res)
-	if (authUserErr) res.json({ error: authUserErr })
+	if (authUserErr) return res.json({ error: authUserErr })
 
 	const { clientID, cookie } = req.body
 
