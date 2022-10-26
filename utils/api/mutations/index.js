@@ -1,6 +1,7 @@
 // Utilities
 import utilApiMutationsCreate from 'utils/api/mutations/create'
 import utilApiMutationsDelete from 'utils/api/mutations/delete'
+import utilApiMutationsUpdate from 'utils/api/mutations/update'
 
 const UtilsApiPushMutations = async ({ mutation, nextMutationId, spaceId, tx }) => {
 	console.log('Processing mutation', nextMutationId, JSON.stringify(mutation))
@@ -10,8 +11,12 @@ const UtilsApiPushMutations = async ({ mutation, nextMutationId, spaceId, tx }) 
 			await utilApiMutationsCreate({ args: mutation.args, nextMutationId, spaceId, tx })
 			break
 
+		case 'update':
+			await utilApiMutationsUpdate({ args: mutation.args, nextMutationId, spaceId, tx })
+			break
+
 		case 'delete':
-			await utilApiMutationsDelete({ args: mutation.args, spaceId, tx })
+			await utilApiMutationsDelete({ args: mutation.args, nextMutationId, spaceId, tx })
 			break
 
 		// ...other mutations, tbd
