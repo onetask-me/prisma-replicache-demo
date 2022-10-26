@@ -1,7 +1,7 @@
 const UtilsApiEntriesTodoGet = async ({ cookie, spaceId, tx }) => {
 	const prismaTodoFindMany = await tx.todo.findMany({
 		where: {
-			AND: [{ isDeleted: false }, { lastModifiedVersion: { gt: cookie || 0 } }, { spaceId }]
+			AND: [{ lastModifiedVersion: { gt: cookie || 0 } }, { spaceId }]
 		},
 		select: {
 			// --- SYSTEM ---
@@ -10,6 +10,7 @@ const UtilsApiEntriesTodoGet = async ({ cookie, spaceId, tx }) => {
 			todoId: true,
 			// --- FIELDS ---
 			isArchived: true,
+			isDeleted: true,
 			isDraft: true,
 			name: true,
 			sortOrder: true
