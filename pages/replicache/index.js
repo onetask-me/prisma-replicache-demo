@@ -23,8 +23,6 @@ const PagesReplicache = () => {
 
 	const handleUpdateTodo = update => rep.mutate.update(update)
 
-	const handleDeleteTodos = async todoId => await rep.mutate.delete(todoId)
-
 	console.log('Todos:', todos)
 
 	return (
@@ -32,8 +30,8 @@ const PagesReplicache = () => {
 			<button onClick={() => signOut()}>Sign out</button>
 
 			<button
-				onClick={() =>
-					rep.mutate.create({
+				onClick={async () =>
+					await rep.mutate.create({
 						todoId: utilGenerateId(),
 						isArchived: false,
 						isDraft: false,
@@ -46,9 +44,8 @@ const PagesReplicache = () => {
 
 			{todos?.some(x => x)
 				? todos?.map(todo => (
-						<p key={todo.todoId} onClick={() => handleDeleteTodos(todo.todoId)}>
-							<b>{todo.todoId}: </b>
-							{todo.name}
+						<p key={todo.todoId} onClick={async () => await rep.mutate.delete(todo.todoId)}>
+							<b>{todo.todoId}:</b> <span>{todo.name}</span>
 						</p>
 				  ))
 				: null}

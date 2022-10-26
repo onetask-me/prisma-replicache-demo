@@ -1,3 +1,3 @@
-const ResolversTodoDelete = async (tx, todoId) => await tx.del(todoId)
+const ResolversTodoDelete = async (tx, args) => await tx.del(`todo/${args}`)
 
 export default ResolversTodoDelete
