@@ -1,4 +1,9 @@
 const UtilsApiPushMutationsDelete = async ({ args, spaceId, tx }) =>
-	await tx.todo.deleteMany({ where: { AND: [{ todoId: args, spaceId }] } })
+	await tx.todo.updateMany({
+		where: { AND: [{ todoId: args, spaceId }] },
+		data: {
+			isDeleted: true
+		}
+	})
 
 export default UtilsApiPushMutationsDelete

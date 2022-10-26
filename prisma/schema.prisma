@@ -41,6 +41,7 @@ model Todo {
   // --- FIELDS ---
   isArchived          Boolean @default(false)
   isDraft             Boolean @default(false)
+  isDeleted           Boolean @default(false)
   name                String?
   sortOrder           Int?
 }

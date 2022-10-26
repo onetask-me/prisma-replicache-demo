@@ -35,7 +35,8 @@ const PagesReplicache = () => {
 						todoId: utilGenerateId(),
 						isArchived: false,
 						isDraft: false,
-						name: `To-do #${todos?.length + 1}`
+						name: `To-do #${todos?.length + 1}`,
+						sortOrder: 0
 					})
 				}
 			>
