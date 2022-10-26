@@ -6,7 +6,7 @@ import utilAuth from 'utils/auth'
 const PagesApiReplicachePull = async (req, res) => {
 	console.log('\nPull: ***', req.body, '***\n')
 
-	const { data: authUser, error: authUserErr } = await utilAuth(req, res)
+	const { error: authUserErr } = await utilAuth(req, res)
 	if (authUserErr) res.json({ error: authUserErr })
 
 	const { clientID, cookie } = req.body
@@ -20,7 +20,7 @@ const PagesApiReplicachePull = async (req, res) => {
 
 			const prismaTodoFindMany = await tx.todo.findMany({
 				where: {
-					AND: [{ lastModifiedVersion: { gt: cookie || 0 } }, { userId: authUser?.userId }]
+					AND: [{ lastModifiedVersion: { gt: cookie || 0 } }, { spaceId }]
 				},
 				select: {
 					// --- SYSTEM ---

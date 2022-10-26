@@ -1,13 +1,8 @@
-// Utilities
-import utilGenerateId from 'utils/generateId'
-
-const UtilsApiPushMutationsCreate = async ({ args, nextMutationId, tx, userId }) =>
+const UtilsApiPushMutationsCreate = async ({ args, nextMutationId, spaceId, tx }) =>
 	await tx.todo.create({
 		data: {
-			// --- PUBLIC ID ---
-			todoId: utilGenerateId(),
 			// --- RELATIONS ---
-			User: { connect: { userId } },
+			Space: { connect: { spaceId } },
 			// --- FIELDS ---
 			...args,
 			lastModifiedVersion: nextMutationId

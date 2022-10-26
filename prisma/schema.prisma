@@ -12,39 +12,40 @@ datasource db {
 }
 
 model ReplicacheClient {
-  id             String   @id @default(uuid())
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
   // --- PUBLIC ID ---
-  clientId       String   @unique
+  clientId       String @unique
   // --- FIELDS ---
   lastMutationId Int
 }
 
 model ReplicacheSpace {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
   // --- PUBLIC ID ---
-  spaceId   String   @unique
+  spaceId String @unique
   // --- FIELDS ---
-  version   Int
+  version Int
+}
+
+// Replicache syncs “spaces”, i.e. groups of related data (such as to-dos and their connected categories)
+model Space {
+  // --- PUBLIC ID ---
+  spaceId String @unique
+  // --- RELATIONS ---
+  Todos   Todo[] @relation("RSpaceToTodos")
+  User    User   @relation("RUserToSpaces", fields: [userId], references: [userId], onDelete: Cascade)
+  userId  String
 }
 
 model Todo {
   // --- SYSTEM ---
-  id                  String   @id @default(uuid())
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-  lastModifiedVersion Int      @default(0)
+  lastModifiedVersion Int     @default(0)
   // --- PUBLIC ID ---
-  todoId              String   @unique
+  todoId              String  @unique
   // --- RELATIONS ---
-  User                User     @relation("RUserToTodos", fields: [userId], references: [userId], onDelete: Cascade)
-  userId              String
+  Space               Space   @relation("RSpaceToTodos", fields: [spaceId], references: [spaceId], onDelete: Cascade)
+  spaceId             String
   // --- FIELDS ---
-  isArchived          Boolean  @default(false)
-  isDraft             Boolean  @default(false)
+  isArchived          Boolean @default(false)
+  isDraft             Boolean @default(false)
   name                String?
   sortOrder           Int?
 }
@@ -56,7 +57,7 @@ model User {
   // --- PUBLIC ID ---
   userId    String   @unique
   // --- RELATIONS ---
-  Todos     Todo[]   @relation("RUserToTodos")
+  Spaces    Space[]  @relation("RUserToSpaces")
   // --- FIELDS ---
   email     String   @unique
 }

@@ -15,12 +15,12 @@ const PagesApiReplicachePush = async (req, res) => {
 
 	const { clientID, mutations } = req.body
 
-	const userId = authUser.id
+	const { spaceId } = req.query
 
 	try {
 		await prisma.$transaction(async tx => {
 			// #1. Get next `version` for Replicache Space
-			const { data: versionNext } = await utilApiVersionGetNext({ tx, userId })
+			const { data: versionNext } = await utilApiVersionGetNext({ tx, spaceId })
 
 			// #2. Get last mutation Id for client
 			let { data: lastMutationId } = await utilApiLastMutationIdGet({ clientID, tx })
@@ -40,7 +40,7 @@ const PagesApiReplicachePush = async (req, res) => {
 				}
 
 				// Perform mutations
-				await utilApiMutations({ mutation, nextMutationId, tx, userId })
+				await utilApiMutations({ mutation, nextMutationId, spaceId, tx })
 
 				lastMutationId = nextMutationId
 			}
@@ -49,7 +49,7 @@ const PagesApiReplicachePush = async (req, res) => {
 			await utilApiLastMutationIdSave({ clientID, lastMutationId, tx })
 
 			// #5. Save new version to Space
-			await utilApiVersionSave({ tx, userId, version: versionNext })
+			await utilApiVersionSave({ tx, spaceId, version: versionNext })
 		})
 
 		// #6. We need to use `await` here, otherwise Next.js will frequently kill the request and the poke won't get sent.
