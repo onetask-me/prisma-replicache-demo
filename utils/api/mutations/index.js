@@ -19,8 +19,6 @@ const UtilsApiPushMutations = async ({ mutation, nextMutationId, spaceId, tx }) 
 			await utilApiMutationsDelete({ args: mutation.args, nextMutationId, spaceId, tx })
 			break
 
-		// ...other mutations, tbd
-
 		default:
 			throw new Error(`Unknown mutation: ${mutation.name}`)
 	}
