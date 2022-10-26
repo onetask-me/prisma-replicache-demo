@@ -32,8 +32,6 @@ const PagesReplicache = () => {
 
 	const todos = useSubscribe(rep, async tx => await tx.scan({ prefix: `todo/` }).toArray(), [rep])
 
-	const handleUpdateTodo = update => rep.mutate.update(update)
-
 	console.log('Todos:', todos)
 
 	return (
@@ -58,8 +56,16 @@ const PagesReplicache = () => {
 
 			{todos?.some(x => x)
 				? todos?.map(todo => (
-						<p key={todo.todoId} onClick={async () => await rep.mutate.delete(todo.todoId)}>
-							<b>{todo.todoId}:</b> <span>{todo.name}</span>
+						<p key={todo.todoId}>
+							<button
+								onClick={async () =>
+									await rep.mutate.update({ todoId: todo.todoId, name: utilGenerateId() })
+								}
+							>
+								Change Name
+							</button>{' '}
+							<button onClick={async () => await rep.mutate.delete(todo.todoId)}>Delete</button>{' '}
+							<b>{todo.todoId}:</b> <span>{todo.name}</span>{' '}
 						</p>
 				  ))
 				: null}

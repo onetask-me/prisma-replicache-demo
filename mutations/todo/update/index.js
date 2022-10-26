@@ -1,9 +1,9 @@
-const ResolversTodoUpdate = async (tx, update) => {
-	const prev = await tx.get(update.id)
+const ResolversTodoUpdate = async (tx, args) => {
+	const key = `todo/${args.todoId}`
 
-	const next = { ...prev, ...update }
+	const prev = await tx.get(key)
 
-	await tx.put(next.id, next)
+	await tx.put(key, { ...prev, ...args })
 }
 
 export default ResolversTodoUpdate
