@@ -30,13 +30,11 @@ const PagesApiReplicachePull = async (req, res) => {
 			if (cookie === null) patch.push({ op: 'clear' })
 
 			patch.push(
-				...apiEntriesTodoGet
-					?.filter(x => !x.isDeleted)
-					?.map(todo => ({
-						op: 'put',
-						key: `todo/${todo.todoId}`,
-						value: { ...todo }
-					}))
+				...apiEntriesTodoGet?.map(todo => ({
+					op: !todo.isDeleted ? 'put' : 'del',
+					key: `todo/${todo.todoId}`,
+					value: { ...todo }
+				}))
 			)
 
 			console.log({ lastMutationId, cookie: replicacheVersion, patch })
