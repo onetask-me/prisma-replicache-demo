@@ -1,5 +1,5 @@
 // Packages
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '@clerk/nextjs'
 import { useSubscribe } from 'replicache-react'
 import { useRouter } from 'next/router'
@@ -13,9 +13,19 @@ const PagesReplicache = () => {
 
 	const { isSignedIn, signOut } = useAuth()
 
+	const [demoTodoSequence, setDemoTodoSequence] = useState(1)
+
 	useEffect(() => {
 		if (!isSignedIn) router.push('/')
 	}, [isSignedIn])
+
+	// For demonstration purposes, create a continuous sequence of to-do names, even if browser reloads
+	useEffect(() => {
+		if (!window.localStorage.getItem('demo'))
+			setDemoTodoSequence(window.localStorage.getItem('demo'))
+
+		window.localStorage.setItem('demo', demoTodoSequence)
+	}, [demoTodoSequence])
 
 	const { data: rep } = useReplicache()
 
@@ -30,15 +40,17 @@ const PagesReplicache = () => {
 			<button onClick={() => signOut()}>Sign out</button>
 
 			<button
-				onClick={async () =>
+				onClick={async () => {
 					await rep.mutate.create({
 						todoId: utilGenerateId(),
 						isArchived: false,
 						isDraft: false,
-						name: `To-do #${todos?.length + 1}`,
+						name: `To-do #${demoTodoSequence}`,
 						sortOrder: 0
 					})
-				}
+
+					setDemoTodoSequence(prev => prev + 1)
+				}}
 			>
 				Create new
 			</button>
