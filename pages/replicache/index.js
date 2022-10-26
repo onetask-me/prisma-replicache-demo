@@ -23,7 +23,7 @@ const PagesReplicache = () => {
 	useEffect(() => {
 		const stored = window.localStorage.getItem('demo')
 
-		if (stored) setDemoTodoSequence(stored)
+		if (stored) setDemoTodoSequence(Number(stored))
 	}, [])
 
 	useEffect(() => window.localStorage.setItem('demo', demoTodoSequence), [demoTodoSequence])
