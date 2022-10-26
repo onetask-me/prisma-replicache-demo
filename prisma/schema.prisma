@@ -18,13 +18,6 @@ model ReplicacheClient {
   lastMutationId Int
 }
 
-model ReplicacheSpace {
-  // --- PUBLIC ID ---
-  spaceId String @unique
-  // --- FIELDS ---
-  version Int
-}
-
 // Replicache syncs “spaces”, i.e. groups of related data (such as to-dos and their connected categories)
 model Space {
   // --- PUBLIC ID ---
@@ -33,6 +26,8 @@ model Space {
   Todos   Todo[] @relation("RSpaceToTodos")
   User    User   @relation("RUserToSpaces", fields: [userId], references: [userId], onDelete: Cascade)
   userId  String
+  // --- FIELDS ---
+  version Int    @default(0)
 }
 
 model Todo {

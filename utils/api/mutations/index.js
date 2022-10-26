@@ -11,7 +11,7 @@ const UtilsApiPushMutations = async ({ mutation, nextMutationId, spaceId, tx }) 
 			break
 
 		case 'delete':
-			await utilApiMutationsDelete({ spaceId, todoId: mutation.args.todoId, tx })
+			await utilApiMutationsDelete({ args: mutation.args, spaceId, tx })
 			break
 
 		// ...other mutations, tbd

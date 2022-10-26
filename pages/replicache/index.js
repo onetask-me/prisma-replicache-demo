@@ -26,7 +26,7 @@ const PagesReplicache = () => {
 
 	const handleUpdateTodo = update => rep.mutate.update(update)
 
-	const handleDeleteTodos = async id => await rep.mutate.delete(id)
+	const handleDeleteTodos = async todoId => await rep.mutate.delete(todoId)
 
 	console.log('Todos:', todos)
 
