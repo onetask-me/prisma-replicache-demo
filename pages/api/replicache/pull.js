@@ -1,5 +1,6 @@
 // Utilities
 import prisma from 'utils/prisma'
+import utilApiEntriesTodoGet from 'utils/api/entries/todoGet'
 import utilApiLastMutationIdGet from 'utils/api/lastMutationIdGet'
 import utilAuth from 'utils/auth'
 
@@ -18,25 +19,10 @@ const PagesApiReplicachePull = async (req, res) => {
 			// #1. Get last mutation Id for client
 			let { data: lastMutationId } = await utilApiLastMutationIdGet({ clientID, tx })
 
-			const prismaTodoFindMany = await tx.todo.findMany({
-				where: {
-					AND: [{ lastModifiedVersion: { gt: cookie || 0 } }, { spaceId }]
-				},
-				select: {
-					// --- SYSTEM ---
-					lastModifiedVersion: true,
-					// --- PUBLIC ID ---
-					todoId: true,
-					// --- FIELDS ---
-					name: true,
-					isArchived: true,
-					isDraft: true,
-					sortOrder: true
-				}
-			})
+			const { data: apiEntriesTodoGet } = await utilApiEntriesTodoGet({ cookie, spaceId, tx })
 
-			const replicacheVersion = prismaTodoFindMany?.length
-				? Math.max(...prismaTodoFindMany?.map(x => x.lastModifiedVersion))
+			const replicacheVersion = apiEntriesTodoGet?.length
+				? Math.max(...apiEntriesTodoGet?.map(x => x.lastModifiedVersion))
 				: 0
 
 			const patch = []
@@ -44,7 +30,7 @@ const PagesApiReplicachePull = async (req, res) => {
 			if (cookie === null) patch.push({ op: 'clear' })
 
 			patch.push(
-				...prismaTodoFindMany.map(todo => ({
+				...apiEntriesTodoGet.map(todo => ({
 					op: 'put',
 					key: `todo/${todo.todoId}`,
 					value: {
