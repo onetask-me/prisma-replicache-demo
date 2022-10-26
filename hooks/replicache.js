@@ -13,7 +13,7 @@ const HooksReplicache = () => {
 
 	const [rep, setRep] = useState(null)
 
-	const spaceId = 'myCircle'
+	const spaceId = 'MyUniqueSpace'
 
 	useEffect(() => {
 		if (user?.id) {

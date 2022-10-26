@@ -10,7 +10,7 @@ import utilAuth from 'utils/auth'
 const PagesApiReplicachePush = async (req, res) => {
 	console.log('\nPush: ***', req.body, '***\n')
 
-	const { data: authUser, error: authUserErr } = await utilAuth(req, res)
+	const { error: authUserErr } = await utilAuth(req, res)
 	if (authUserErr) res.json({ error: authUserErr })
 
 	const { clientID, mutations } = req.body

@@ -29,6 +29,8 @@ const PagesApiReplicachePull = async (req, res) => {
 					todoId: true,
 					// --- FIELDS ---
 					name: true,
+					isArchived: true,
+					isDraft: true,
 					sortOrder: true
 				}
 			})
@@ -46,7 +48,10 @@ const PagesApiReplicachePull = async (req, res) => {
 					op: 'put',
 					key: `todo/${todo.todoId}`,
 					value: {
+						todoId: todo.todoId,
 						name: todo.name,
+						isArchived: todo.isArchived,
+						isDraft: todo.isDraft,
 						sortOrder: todo.sortOrder
 					}
 				}))

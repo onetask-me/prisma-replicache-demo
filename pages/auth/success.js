@@ -11,7 +11,9 @@ const PagesAuthSuccess = () => {
 	useEffect(() => {
 		;(async () => {
 			if (isSignedIn) {
-				const response = await fetch('/api/auth', {
+				const spaceId = 'MyUniqueSpace'
+
+				const response = await fetch(`/api/auth?spaceId=${spaceId}`, {
 					method: 'GET',
 					headers: {
 						'Content-Type': 'application/json',

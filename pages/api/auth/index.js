@@ -8,6 +8,8 @@ const PagesApiAuth = withAuth(async (req, res) => {
 
 	if (!sessionId || !userId) return { error: 'not_signed_in' }
 
+	const { spaceId } = req.query
+
 	const clerkUser = await users.getUser(userId)
 
 	if (!clerkUser) return { error: 'user_not_found' }
@@ -19,7 +21,11 @@ const PagesApiAuth = withAuth(async (req, res) => {
 	await prisma.user.upsert({
 		where: { userId: clerkUser.id },
 		create: {
+			// --- PUBLIC ID ---
 			userId: clerkUser.id,
+			// --- RELATIONS ---
+			Spaces: { connectOrCreate: { spaceId } },
+			// --- FIELDS ---
 			email
 		},
 		update: { email }

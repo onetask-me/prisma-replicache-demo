@@ -19,15 +19,7 @@ const PagesReplicache = () => {
 
 	const { data: rep } = useReplicache()
 
-	const todos = useSubscribe(
-		rep,
-		async tx => {
-			console.log(tx)
-
-			return await tx.scan({ prefix: `todo/` }).toArray()
-		},
-		[rep]
-	)
+	const todos = useSubscribe(rep, async tx => await tx.scan({ prefix: `todo/` }).toArray(), [rep])
 
 	const handleNewItem = text =>
 		rep.mutate.create({ todoId: utilGenerateId(), isArchived: false, name: text })
