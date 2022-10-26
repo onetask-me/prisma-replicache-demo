@@ -19,7 +19,7 @@ const PagesApiReplicachePush = async (req, res) => {
 
 	try {
 		await prisma.$transaction(async tx => {
-			// #1. Get next `version` for Replicache Space
+			// #1. Get next `version` for space
 			const { data: versionNext } = await utilApiVersionGetNext({ tx, spaceId })
 
 			// #2. Get last mutation Id for client

@@ -16,15 +16,18 @@ const PagesApiReplicachePull = async (req, res) => {
 
 	try {
 		await prisma.$transaction(async tx => {
-			// #1. Get last mutation Id for client
+			// #1. Get last mutation Id for the current client
 			let { data: lastMutationId } = await utilApiLastMutationIdGet({ clientID, tx })
 
+			// #2. Get all transactions done after the last client request for the current space
 			const { data: apiEntriesTodoGet } = await utilApiEntriesTodoGet({ cookie, spaceId, tx })
 
+			// #3. Get the highest authoritative version number
 			const replicacheVersion = apiEntriesTodoGet?.length
 				? Math.max(...apiEntriesTodoGet?.map(x => x.lastModifiedVersion))
 				: 0
 
+			// #4. Put together a patch with instructions for the client
 			const patch = []
 
 			if (cookie === null) patch.push({ op: 'clear' })
@@ -36,8 +39,6 @@ const PagesApiReplicachePull = async (req, res) => {
 					value: { ...todo }
 				}))
 			)
-
-			console.log({ lastMutationId, cookie: replicacheVersion, patch })
 
 			res.json({ lastMutationID: lastMutationId, cookie: replicacheVersion, patch })
 		})
