@@ -21,11 +21,12 @@ const PagesReplicache = () => {
 
 	// For demonstration purposes, create a continuous sequence of to-do names, even if browser reloads
 	useEffect(() => {
-		if (!window.localStorage.getItem('demo'))
-			setDemoTodoSequence(window.localStorage.getItem('demo'))
+		const stored = window.localStorage.getItem('demo')
 
-		window.localStorage.setItem('demo', demoTodoSequence)
-	}, [demoTodoSequence])
+		if (stored) setDemoTodoSequence(stored)
+	}, [])
+
+	useEffect(() => window.localStorage.setItem('demo', demoTodoSequence), [demoTodoSequence])
 
 	const { data: rep } = useReplicache()
 
