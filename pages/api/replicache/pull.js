@@ -14,6 +14,8 @@ const PagesApiReplicachePull = async (req, res) => {
 
 	const { spaceId } = req.query
 
+	if (!clientID || !spaceId || cookie === undefined) return res.status(403)
+
 	try {
 		await prisma.$transaction(async tx => {
 			// #1. Get last mutation Id for the current client
@@ -24,7 +26,7 @@ const PagesApiReplicachePull = async (req, res) => {
 				cookie,
 				spaceId,
 				tx,
-				userId: user.userId
+				userId: user.id
 			})
 
 			// #3. Get the highest authoritative version number

@@ -43,7 +43,7 @@ model Todo {
   isDraft             Boolean @default(false)
   isDeleted           Boolean @default(false)
   name                String?
-  sortOrder           Int?
+  sortOrder           Int     @default(0)
 }
 
 model User {

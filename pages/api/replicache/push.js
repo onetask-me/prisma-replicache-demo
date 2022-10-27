@@ -18,13 +18,15 @@ const PagesApiReplicachePush = async (req, res) => {
 
 	const { spaceId } = req.query
 
+	if (!clientID || !spaceId || !mutations) return res.status(403)
+
 	try {
 		await prisma.$transaction(async tx => {
 			// #1. Get next `version` for space
 			const { data: versionNext, error: versionNextErr } = await utilApiVersionGetNext({
 				tx,
 				spaceId,
-				userId: user.userId
+				userId: user.id
 			})
 
 			if (versionNextErr) throw new Error('unauthorized')

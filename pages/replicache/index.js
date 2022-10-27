@@ -32,8 +32,6 @@ const PagesReplicache = () => {
 				onClick={async () => {
 					await rep.mutate.create({
 						todoId: utilGenerateId(),
-						isArchived: false,
-						isDraft: false,
 						name: `To-do #${demoTodoSequence}`,
 						sortOrder: 0
 					})
@@ -45,19 +43,21 @@ const PagesReplicache = () => {
 			</button>
 
 			{todos?.some(x => x)
-				? todos?.map(todo => (
-						<p key={todo.todoId}>
-							<button
-								onClick={async () =>
-									await rep.mutate.update({ todoId: todo.todoId, name: utilGenerateId() })
-								}
-							>
-								Change Name
-							</button>{' '}
-							<button onClick={async () => await rep.mutate.delete(todo.todoId)}>Delete</button>{' '}
-							<b>{todo.todoId}:</b> <span>{todo.name}</span>{' '}
-						</p>
-				  ))
+				? todos
+						?.sort((a, b) => a.sortOrder - b.sortOrder)
+						?.map(todo => (
+							<p key={todo.todoId}>
+								<button
+									onClick={async () =>
+										await rep.mutate.update({ todoId: todo.todoId, name: utilGenerateId() })
+									}
+								>
+									Change Name
+								</button>{' '}
+								<button onClick={async () => await rep.mutate.delete(todo.todoId)}>Delete</button>{' '}
+								<b>{todo.todoId}:</b> <span>{todo.name}</span>{' '}
+							</p>
+						))
 				: null}
 		</div>
 	)
