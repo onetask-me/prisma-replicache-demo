@@ -6,7 +6,7 @@ import utilApiMutationsUpdate from 'utils/api/mutations/update'
 const UtilsApiMutations = async ({ lastMutationId, mutations, spaceId, tx }) => {
 	let nextMutationId = lastMutationId
 
-	for (const mutation of mutations) {
+	for await (const mutation of mutations) {
 		nextMutationId++
 
 		if (mutation.id < nextMutationId) {

@@ -10,13 +10,10 @@ const MutationsTodoCreate = async (tx, args) => {
 	const todos = await mutationTodoGet(tx)
 
 	// Update sort order in local cache
-	for await (let todo of todos) {
-		console.log('Update', todo.sortOrder + 1)
-
+	for await (let todo of todos)
 		await mutationTodoUpdate(tx, { todoId: todo.todoId, sortOrder: todo.sortOrder + 1 })
-	}
 
-	console.log('Create', args.sortOrder)
+	console.log('Create', args)
 
 	await tx.put(key, args)
 }
