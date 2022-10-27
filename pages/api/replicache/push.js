@@ -61,6 +61,8 @@ const PagesApiReplicachePush = async (req, res) => {
 		console.error(err)
 
 		res.status(500).send(err.toString())
+	} finally {
+		await prisma.$disconnect()
 	}
 }
 
