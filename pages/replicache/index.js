@@ -1,32 +1,19 @@
 // Packages
-import { useState, useEffect } from 'react'
 import { useAuth } from '@clerk/nextjs'
 import { useSubscribe } from 'replicache-react'
-import { useRouter } from 'next/router'
 // Utilities
 import utilGenerateId from 'utils/generateId'
 // Hooks
+import useDemoSequence from 'hooks/demoSequence'
 import useReplicache from 'hooks/replicache'
+import useSignInRequired from 'hooks/signInRequired'
 
 const PagesReplicache = () => {
-	const router = useRouter()
+	const { signOut } = useAuth()
 
-	const { isSignedIn, signOut } = useAuth()
+	useSignInRequired()
 
-	const [demoTodoSequence, setDemoTodoSequence] = useState(1)
-
-	useEffect(() => {
-		if (!isSignedIn) router.push('/')
-	}, [isSignedIn])
-
-	// For demonstration purposes, create a continuous sequence of to-do names, even if browser reloads
-	useEffect(() => {
-		const stored = window.localStorage.getItem('demo')
-
-		if (stored) setDemoTodoSequence(Number(stored))
-	}, [])
-
-	useEffect(() => window.localStorage.setItem('demo', demoTodoSequence), [demoTodoSequence])
+	const [demoTodoSequence, setDemoTodoSequence] = useDemoSequence()
 
 	const { data: rep } = useReplicache()
 

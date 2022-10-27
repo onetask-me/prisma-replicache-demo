@@ -5,6 +5,7 @@ import utilApiLastMutationIdSave from 'utils/api/lastMutationIdSave'
 import utilApiVersionGetNext from 'utils/api/versionGetNext'
 import utilApiVersionSave from 'utils/api/versionSave'
 import utilApiMutations from 'utils/api/mutations'
+import utilApiPokeSend from 'utils/api/pokeSend'
 import utilAuth from 'utils/auth'
 
 const PagesApiReplicachePush = async (req, res) => {
@@ -52,8 +53,8 @@ const PagesApiReplicachePush = async (req, res) => {
 			await utilApiVersionSave({ tx, spaceId, version: versionNext })
 		})
 
-		// #6. We need to use `await` here, otherwise Next.js will frequently kill the request and the poke won't get sent.
-		console.log('Poke')
+		// #6. Poke client(s) to send a pull.
+		await utilApiPokeSend()
 
 		res.json({ done: true })
 	} catch (err) {
