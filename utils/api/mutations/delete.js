@@ -1,4 +1,4 @@
-const UtilsApiPushMutationsDelete = async ({ args, nextMutationId, spaceId, tx }) =>
+const UtilsApiMutationsDelete = async ({ args, nextMutationId, spaceId, tx }) =>
 	await tx.todo.updateMany({
 		where: { AND: [{ todoId: args, spaceId }] },
 		data: {
@@ -7,4 +7,4 @@ const UtilsApiPushMutationsDelete = async ({ args, nextMutationId, spaceId, tx }
 		}
 	})
 
-export default UtilsApiPushMutationsDelete
+export default UtilsApiMutationsDelete

@@ -3,7 +3,7 @@ import utilApiMutationsCreate from 'utils/api/mutations/create'
 import utilApiMutationsDelete from 'utils/api/mutations/delete'
 import utilApiMutationsUpdate from 'utils/api/mutations/update'
 
-const UtilsApiPushMutations = async ({ mutation, nextMutationId, spaceId, tx }) => {
+const UtilsApiMutations = async ({ mutation, nextMutationId, spaceId, tx }) => {
 	console.log('Processing mutation', nextMutationId, JSON.stringify(mutation))
 
 	switch (mutation.name) {
@@ -24,4 +24,4 @@ const UtilsApiPushMutations = async ({ mutation, nextMutationId, spaceId, tx }) 
 	}
 }
 
-export default UtilsApiPushMutations
+export default UtilsApiMutations

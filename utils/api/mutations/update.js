@@ -1,4 +1,4 @@
-const UtilsApiPushMutationsUpdate = async ({ args, nextMutationId, spaceId, tx }) =>
+const UtilsApiMutationsUpdate = async ({ args, nextMutationId, spaceId, tx }) =>
 	await tx.todo.update({
 		where: { todoId: args.todoId },
 		data: {
@@ -10,4 +10,4 @@ const UtilsApiPushMutationsUpdate = async ({ args, nextMutationId, spaceId, tx }
 		}
 	})
 
-export default UtilsApiPushMutationsUpdate
+export default UtilsApiMutationsUpdate

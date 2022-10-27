@@ -1,4 +1,4 @@
-const UtilsApiPushLastMutationIdGet = async ({ clientID, tx }) => {
+const UtilsApiLastMutationIdGet = async ({ clientID, tx }) => {
 	let lastMutationId
 
 	const prismaReplicacheClientFindUnique = await tx.replicacheClient.findUnique({
@@ -22,4 +22,4 @@ const UtilsApiPushLastMutationIdGet = async ({ clientID, tx }) => {
 	return { data: lastMutationId }
 }
 
-export default UtilsApiPushLastMutationIdGet
+export default UtilsApiLastMutationIdGet

@@ -1,4 +1,4 @@
-const UtilsApiPushMutationsCreate = async ({ args, nextMutationId, spaceId, tx }) => {
+const UtilsApiMutationsCreate = async ({ args, nextMutationId, spaceId, tx }) => {
 	// Update sort order
 	await tx.todo.updateMany({
 		where: {
@@ -20,4 +20,4 @@ const UtilsApiPushMutationsCreate = async ({ args, nextMutationId, spaceId, tx }
 	})
 }
 
-export default UtilsApiPushMutationsCreate
+export default UtilsApiMutationsCreate

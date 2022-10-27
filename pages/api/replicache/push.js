@@ -11,8 +11,8 @@ import utilAuth from 'utils/auth'
 const PagesApiReplicachePush = async (req, res) => {
 	console.log('\nPush: ***', req.body, '***\n')
 
-	const { error: authUserErr } = await utilAuth(req, res)
-	if (authUserErr) return res.json({ error: authUserErr })
+	const { data: user, error: userErr } = await utilAuth(req, res)
+	if (!user || userErr) return res.status(401)
 
 	const { clientID, mutations } = req.body
 
@@ -21,7 +21,13 @@ const PagesApiReplicachePush = async (req, res) => {
 	try {
 		await prisma.$transaction(async tx => {
 			// #1. Get next `version` for space
-			const { data: versionNext } = await utilApiVersionGetNext({ tx, spaceId })
+			const { data: versionNext, error: versionNextErr } = await utilApiVersionGetNext({
+				tx,
+				spaceId,
+				userId: user.userId
+			})
+
+			if (versionNextErr) throw new Error('unauthorized')
 
 			// #2. Get last mutation Id for client
 			let { data: lastMutationId } = await utilApiLastMutationIdGet({ clientID, tx })

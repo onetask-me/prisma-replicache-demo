@@ -7,8 +7,8 @@ import utilAuth from 'utils/auth'
 const PagesApiReplicachePull = async (req, res) => {
 	console.log('\nPull: ***', req.body, '***\n')
 
-	const { error: authUserErr } = await utilAuth(req, res)
-	if (authUserErr) return res.json({ error: authUserErr })
+	const { data: user, error: userErr } = await utilAuth(req, res)
+	if (!user || userErr) return res.status(401)
 
 	const { clientID, cookie } = req.body
 
@@ -20,7 +20,12 @@ const PagesApiReplicachePull = async (req, res) => {
 			let { data: lastMutationId } = await utilApiLastMutationIdGet({ clientID, tx })
 
 			// #2. Get all transactions done after the last client request for the current space
-			const { data: apiEntriesTodoGet } = await utilApiEntriesTodoGet({ cookie, spaceId, tx })
+			const { data: apiEntriesTodoGet } = await utilApiEntriesTodoGet({
+				cookie,
+				spaceId,
+				tx,
+				userId: user.userId
+			})
 
 			// #3. Get the highest authoritative version number
 			const replicacheVersion = apiEntriesTodoGet?.length
