@@ -1,4 +1,4 @@
-const ResolversTodoUpdate = async (tx, args) => {
+const MutationsTodoUpdate = async (tx, args) => {
 	const key = `todo/${args.todoId}`
 
 	const prev = await tx.get(key)
@@ -6,4 +6,4 @@ const ResolversTodoUpdate = async (tx, args) => {
 	await tx.put(key, { ...prev, ...args })
 }
 
-export default ResolversTodoUpdate
+export default MutationsTodoUpdate

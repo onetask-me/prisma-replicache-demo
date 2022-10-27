@@ -2,7 +2,7 @@
 import mutationTodoGet from 'mutations/todo/get'
 import mutationTodoUpdate from 'mutations/todo/update'
 
-const ResolversTodoCreate = async (tx, args) => {
+const MutationsTodoCreate = async (tx, args) => {
 	const key = `todo/${args.todoId}`
 
 	if (await tx.has(key)) throw new Error('Todo already exists')
@@ -17,4 +17,4 @@ const ResolversTodoCreate = async (tx, args) => {
 	await tx.put(key, args)
 }
 
-export default ResolversTodoCreate
+export default MutationsTodoCreate
