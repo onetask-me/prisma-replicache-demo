@@ -40,6 +40,7 @@ const PagesApiReplicachePull = async (req, res) => {
 				}))
 			)
 
+			// #5. Return object to client
 			res.json({ lastMutationID: lastMutationId, cookie: replicacheVersion, patch })
 		})
 	} catch (err) {

@@ -5,6 +5,7 @@ import { useSubscribe } from 'replicache-react'
 import utilGenerateId from 'utils/generateId'
 // Hooks
 import useDemoSequence from 'hooks/demoSequence'
+import usePokeListener from 'hooks/pokeListener'
 import useReplicache from 'hooks/replicache'
 import useSignInRequired from 'hooks/signInRequired'
 
@@ -16,6 +17,8 @@ const PagesReplicache = () => {
 	const [demoTodoSequence, setDemoTodoSequence] = useDemoSequence()
 
 	const { data: rep } = useReplicache()
+
+	usePokeListener({ rep })
 
 	const todos = useSubscribe(rep, async tx => await tx.scan({ prefix: `todo/` }).toArray(), [rep])
 
