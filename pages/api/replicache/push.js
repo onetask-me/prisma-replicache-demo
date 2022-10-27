@@ -33,27 +33,15 @@ const PagesApiReplicachePush = async (req, res) => {
 			let { data: lastMutationId } = await utilApiLastMutationIdGet({ clientID, tx })
 
 			// #3. Iterate mutations, increase mutation Id on each iteration
-			for (const mutation of mutations) {
-				const nextMutationId = lastMutationId + 1
-
-				if (mutation.id < nextMutationId) {
-					console.log(`Mutation ${mutation.id} has already been processed - skipping`)
-					continue
-				}
-
-				if (mutation.id > nextMutationId) {
-					console.warn(`Mutation ${mutation.id} is from the future - aborting`)
-					break
-				}
-
-				// Perform mutations
-				await utilApiMutations({ mutation, nextMutationId, spaceId, tx })
-
-				lastMutationId = nextMutationId
-			}
+			const { data: nextMutationId } = await utilApiMutations({
+				lastMutationId,
+				mutations,
+				spaceId,
+				tx
+			})
 
 			// #4. Save mutation Id to Client
-			await utilApiLastMutationIdSave({ clientID, lastMutationId, tx })
+			await utilApiLastMutationIdSave({ clientID, nextMutationId, tx })
 
 			// #5. Save new version to Space
 			await utilApiVersionSave({ tx, spaceId, version: versionNext })

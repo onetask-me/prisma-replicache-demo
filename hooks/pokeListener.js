@@ -7,7 +7,7 @@ const HooksPokeListener = ({ rep }) => {
 
 	useEffect(() => {
 		if (!pusherHasLoaded && rep) {
-			console.log('Listening', rep)
+			console.log('Listening for pokes')
 
 			// Listen for pokes, and pull whenever we get one.
 			// Pusher.logToConsole = true
@@ -19,7 +19,7 @@ const HooksPokeListener = ({ rep }) => {
 			const channel = pusher.subscribe('replicache')
 
 			channel.bind('poke', () => {
-				console.log('got poked')
+				console.log('Got poked!')
 
 				rep.pull()
 			})
