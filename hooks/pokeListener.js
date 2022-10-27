@@ -1,28 +1,34 @@
 // Packages
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Pusher from 'pusher-js'
 
 const HooksPokeListener = ({ rep }) => {
-	console.log('Listening', rep)
+	const [pusherHasLoaded, setPusherHasLoaded] = useState(false)
 
 	useEffect(() => {
-		// Listen for pokes, and pull whenever we get one.
-		Pusher.logToConsole = true
+		if (!pusherHasLoaded && rep) {
+			console.log('Listening', rep)
 
-		const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_REPLICHAT_KEY, {
-			cluster: process.env.NEXT_PUBLIC_PUSHER_REPLICHAT_CLUSTER
-		})
+			// Listen for pokes, and pull whenever we get one.
+			Pusher.logToConsole = true
 
-		const channel = pusher.subscribe('replicache')
+			const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_REPLICACHE_KEY, {
+				cluster: process.env.NEXT_PUBLIC_PUSHER_REPLICACHE_CLUSTER
+			})
 
-		channel.bind('poke', () => {
-			console.log('got poked')
+			const channel = pusher.subscribe('replicache')
 
-			rep.pull()
-		})
+			channel.bind('poke', () => {
+				console.log('got poked')
 
-		return () => pusher.unsubscribe('replicache')
-	}, [])
+				rep.pull()
+			})
+
+			setPusherHasLoaded(true)
+
+			return () => pusher.unsubscribe('replicache')
+		}
+	}, [rep])
 }
 
 export default HooksPokeListener
