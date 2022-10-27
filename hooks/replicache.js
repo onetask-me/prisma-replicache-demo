@@ -2,11 +2,11 @@
 import { useState, useEffect } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { Replicache } from 'replicache'
-// Replicache
-import todoCreate from 'mutations/todo/create'
-import todoDelete from 'mutations/todo/delete'
-import todoGet from 'mutations/todo/get'
-import todoUpdate from 'mutations/todo/update'
+// Mutations
+import mutationTodoCreate from 'mutations/todo/create'
+import mutationTodoDelete from 'mutations/todo/delete'
+import mutationTodoGet from 'mutations/todo/get'
+import mutationTodoUpdate from 'mutations/todo/update'
 
 const HooksReplicache = () => {
 	const { user } = useUser()
@@ -23,10 +23,10 @@ const HooksReplicache = () => {
 				pushURL: `/api/replicache/push?spaceId=${spaceId}`,
 				pullURL: `/api/replicache/pull?spaceId=${spaceId}`,
 				mutators: {
-					create: todoCreate,
-					delete: todoDelete,
-					get: todoGet,
-					update: todoUpdate
+					create: mutationTodoCreate,
+					delete: mutationTodoDelete,
+					get: mutationTodoGet,
+					update: mutationTodoUpdate
 				}
 			})
 

@@ -10,7 +10,7 @@ const HooksPokeListener = ({ rep }) => {
 			console.log('Listening', rep)
 
 			// Listen for pokes, and pull whenever we get one.
-			Pusher.logToConsole = true
+			// Pusher.logToConsole = true
 
 			const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_REPLICACHE_KEY, {
 				cluster: process.env.NEXT_PUBLIC_PUSHER_REPLICACHE_CLUSTER
