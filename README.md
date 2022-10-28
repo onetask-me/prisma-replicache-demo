@@ -4,7 +4,8 @@
 
 ## PlanetScale Test Database
 
-> Contact me for test database password. Insert password into `.env` file while testing, but **do not commit** to `.env` file.
+1. Combine this password for the test database: Append second part: `SAQTP3eDbDvuiFTPRDuENcfBtzP8` to the end of the first part: `pscale_pw_mireF5d4RoNOEaO`
+2. Insert password into `.env` file while testing, but **do not commit** to `.env` file.
 
 ## Open Source
 
