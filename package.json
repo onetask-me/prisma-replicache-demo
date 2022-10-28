@@ -12,9 +12,9 @@
 		"type": "git"
 	},
 	"scripts": {
-		"next": "pscale connect lifeproductivityapp dev --execute-protocol 'mysql' --execute-env-url 'APP_DB' --execute 'doppler run -- next'",
-		"reset": "rm -rf .next node_modules && yarn && pscale connect lifeproductivityapp dev --execute-protocol 'mysql' --execute-env-url 'APP_DB' --execute 'doppler run -- prisma db push --schema=./prisma/schema.prisma --force-reset'",
-		"studio": "pscale connect lifeproductivityapp dev --execute-protocol 'mysql' --execute-env-url 'APP_DB' --execute 'doppler run -- prisma studio --schema=./prisma/schema.prisma'"
+		"next": "pscale connect test dev --execute-protocol 'mysql' --execute-env-url 'DATABASE_URL' --execute 'next'",
+		"db:push": "rm -rf .next node_modules && yarn && pscale connect test dev --execute-protocol 'mysql' --execute-env-url 'DATABASE_URL' --execute 'prisma db push --schema=./prisma/schema.prisma --force-reset'",
+		"prisma:studio": "pscale connect test dev --execute-protocol 'mysql' --execute-env-url 'DATABASE_URL' --execute 'prisma studio --schema=./prisma/schema.prisma'"
 	},
 	"prisma": {
 		"schema": "./prisma/schema.prisma"
