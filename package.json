@@ -12,9 +12,9 @@
 		"type": "git"
 	},
 	"scripts": {
-		"next": "pscale connect test dev --execute-protocol 'mysql' --execute-env-url 'DATABASE_URL' --execute 'next'",
-		"db:push": "rm -rf .next node_modules && yarn && pscale connect test dev --execute-protocol 'mysql' --execute-env-url 'DATABASE_URL' --execute 'prisma db push --schema=./prisma/schema.prisma --force-reset'",
-		"prisma:studio": "pscale connect test dev --execute-protocol 'mysql' --execute-env-url 'DATABASE_URL' --execute 'prisma studio --schema=./prisma/schema.prisma'"
+		"dev": "next",
+		"db:push": "npx prisma db push --schema=./prisma/schema.prisma --force-reset",
+		"prisma:studio": "prisma studio --schema=./prisma/schema.prisma"
 	},
 	"prisma": {
 		"schema": "./prisma/schema.prisma"

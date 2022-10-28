@@ -1,4 +1,4 @@
-# Replicache + Prisma + NextJS + Clerk + Doppler + PlanetScale
+# Replicache + Prisma + NextJS + Clerk + PlanetScale
 
 > Replicache Demo using Prisma and NextJS on a PlanetScale database. Authentication provided by Clerk.
 
