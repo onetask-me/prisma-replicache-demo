@@ -14,6 +14,7 @@
 	"scripts": {
 		"dev": "next",
 		"db:push": "npx prisma db push --schema=./prisma/schema.prisma --force-reset",
+		"prisma:generate": "prisma generate --schema=./prisma/schema.prisma",
 		"prisma:studio": "prisma studio --schema=./prisma/schema.prisma"
 	},
 	"prisma": {
