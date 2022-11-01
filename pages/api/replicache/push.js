@@ -20,55 +20,38 @@ const PagesApiReplicachePush = async (req, res) => {
 
 	if (!clientID || !spaceId || !mutations) return res.status(403)
 
-	try {
-		await prisma.$transaction(
-			async tx => {
-				// #1. Get next `version` for space
-				const { data: versionNext, error: versionNextErr } = await utilApiVersionGetNext({
-					tx,
-					spaceId,
-					userId: user.id
-				})
+	await prisma.$transaction(async tx => {
+		// #1. Get next `version` for space
+		const { data: versionNext, error: versionNextErr } = await utilApiVersionGetNext({
+			tx,
+			spaceId,
+			userId: user.id
+		})
 
-				if (versionNextErr) throw new Error('unauthorized')
+		// #2. Get last mutation Id for client
+		let { data: lastMutationId } = await utilApiLastMutationIdGet({ clientID, tx })
 
-				// #2. Get last mutation Id for client
-				let { data: lastMutationId } = await utilApiLastMutationIdGet({ clientID, tx })
+		// #3. Iterate mutations, increase mutation Id on each iteration
+		const { data: nextMutationId } = await utilApiMutations({
+			lastMutationId,
+			mutations,
+			spaceId,
+			tx
+		})
 
-				// #3. Iterate mutations, increase mutation Id on each iteration
-				const { data: nextMutationId } = await utilApiMutations({
-					lastMutationId,
-					mutations,
-					spaceId,
-					tx
-				})
+		// #4. Save mutation Id to Client
+		await utilApiLastMutationIdSave({ clientID, nextMutationId, tx })
 
-				// #4. Save mutation Id to Client
-				await utilApiLastMutationIdSave({ clientID, nextMutationId, tx })
+		// #5. Save new version to Space
+		await utilApiVersionSave({ tx, spaceId, version: versionNext })
 
-				// #5. Save new version to Space
-				await utilApiVersionSave({ tx, spaceId, version: versionNext })
+		return true
+	})
 
-				return true
-			},
-			// FIX: interactive transactions error still occurs with long wait times
-			{
-				maxWait: 20000,
-				timeout: 60000
-			}
-		)
+	// #6. Poke client(s) to send a pull.
+	// await utilApiPokeSend()
 
-		// #6. Poke client(s) to send a pull.
-		await utilApiPokeSend()
-
-		res.json({ done: true })
-	} catch (err) {
-		console.error(err)
-
-		res.status(500).send(err.toString())
-	} finally {
-		await prisma.$disconnect()
-	}
+	res.json({ done: true })
 }
 
 export default PagesApiReplicachePush

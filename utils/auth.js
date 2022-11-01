@@ -1,7 +1,5 @@
 // Packages
 import { withAuth, users } from '@clerk/nextjs/api'
-// Utilities
-import prisma from 'utils/prisma'
 
 const UtilsAuth = withAuth(async (req, _) => {
 	const { sessionId, userId } = req.auth
