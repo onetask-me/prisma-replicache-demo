@@ -22,7 +22,7 @@ const PagesApiReplicachePush = async (req, res) => {
 
 	await prisma.$transaction(async tx => {
 		// #1. Get next `version` for space
-		const { data: versionNext, error: versionNextErr } = await utilApiVersionGetNext({
+		const { data: versionNext } = await utilApiVersionGetNext({
 			tx,
 			spaceId,
 			userId: user.id

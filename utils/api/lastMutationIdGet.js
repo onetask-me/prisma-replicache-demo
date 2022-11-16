@@ -6,9 +6,9 @@ const UtilsApiLastMutationIdGet = async ({ clientID, tx }) => {
 		select: { lastMutationId: true }
 	})
 
-	lastMutationId = prismaReplicacheClientFindUnique?.lastMutationId
-
-	if (!prismaReplicacheClientFindUnique) {
+	if (prismaReplicacheClientFindUnique)
+		lastMutationId = prismaReplicacheClientFindUnique.lastMutationId
+	else {
 		await tx.replicacheClient.create({
 			data: {
 				clientId: clientID,

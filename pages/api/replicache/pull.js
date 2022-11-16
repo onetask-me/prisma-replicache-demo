@@ -10,8 +10,10 @@ const PagesApiReplicachePull = async (req, res) => {
 	const { data: user, error: userErr } = await utilAuth(req, res)
 	if (!user || userErr) return res.status(401)
 
+	// Provided by Replicache
 	const { clientID, cookie } = req.body
 
+	// Provided by client
 	const { spaceId } = req.query
 
 	if (!clientID || !spaceId || cookie === undefined) return res.status(403)
@@ -31,20 +33,21 @@ const PagesApiReplicachePull = async (req, res) => {
 		// #3. Get the highest authoritative version number
 		const replicacheVersion = apiEntriesTodoGet?.length
 			? Math.max(...apiEntriesTodoGet?.map(x => x.lastModifiedVersion))
-			: 0
+			: null
 
 		// #4. Put together a patch with instructions for the client
 		const patch = []
 
-		if (cookie === null) patch.push({ op: 'clear' })
+		if (replicacheVersion === null) patch.push({ op: 'clear' })
 
-		patch.push(
-			...apiEntriesTodoGet?.map(todo => ({
-				op: !todo.isDeleted ? 'put' : 'del',
-				key: `todo/${todo.todoId}`,
-				value: { ...todo }
-			}))
-		)
+		if (apiEntriesTodoGet?.length)
+			patch.push(
+				...apiEntriesTodoGet.map(todo => ({
+					op: !todo.isDeleted ? 'put' : 'del',
+					key: `todo/${todo.todoId}`,
+					value: { ...todo }
+				}))
+			)
 
 		// #5. Return object to client
 		res.json({ lastMutationID: lastMutationId, cookie: replicacheVersion, patch })
