@@ -65,7 +65,7 @@ const PagesApiReplicachePush = async (req, res) => {
 	// #6. Poke client(s) to send a pull.
 	await utilApiPokeSend()
 
-	res.json({ done: versionLatest })
+	return res.json({ done: versionLatest })
 }
 
 export default PagesApiReplicachePush

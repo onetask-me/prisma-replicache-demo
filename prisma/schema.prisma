@@ -20,7 +20,7 @@ model ReplicacheClient {
 // Replicache syncs “spaces”, i.e. groups of related data (such as to-dos and their connected categories)
 model Space {
   // --- SYSTEM ---
-  version Int    @id @default(autoincrement())
+  version Int    @default(0)
   // --- PUBLIC ID ---
   spaceId String @unique
   // --- RELATIONS ---
