@@ -22,7 +22,7 @@ const PagesApiReplicachePush = async (req, res) => {
 
 	if (!clientID || !spaceId || !mutations) return res.status(403)
 
-	await prisma.$transaction(async tx => {
+	const { data: versionLatest } = await prisma.$transaction(async tx => {
 		// #1. Get next `version` for space
 		const { data: versionNext } = await utilApiVersionGetNext({
 			tx,
@@ -46,15 +46,15 @@ const PagesApiReplicachePush = async (req, res) => {
 		await utilApiLastMutationIdSave({ clientID, nextMutationId, tx })
 
 		// #5. Save new version to Space
-		await utilApiVersionSave({ tx, spaceId, version: versionNext })
+		const { data: versionUpdated } = await utilApiVersionSave({ tx, spaceId, version: versionNext })
 
-		return true
+		return { data: versionUpdated }
 	})
 
 	// #6. Poke client(s) to send a pull.
 	await utilApiPokeSend()
 
-	res.json({ done: true })
+	res.json({ done: versionLatest })
 }
 
 export default PagesApiReplicachePush

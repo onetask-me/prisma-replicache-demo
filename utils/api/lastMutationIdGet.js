@@ -13,7 +13,8 @@ const UtilsApiLastMutationIdGet = async ({ clientID, tx }) => {
 			data: {
 				clientId: clientID,
 				lastMutationId: 0
-			}
+			},
+			select: { lastMutationId: true }
 		})
 
 		lastMutationId = 0
