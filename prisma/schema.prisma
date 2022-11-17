@@ -31,18 +31,18 @@ model Space {
 
 model Todo {
   // --- SYSTEM ---
-  lastModifiedVersion Int     @default(0)
+  versionUpdatedAt Int     @default(0)
   // --- PUBLIC ID ---
-  todoId              String  @unique
+  todoId           String  @unique
   // --- RELATIONS ---
-  Space               Space   @relation("RSpaceToTodos", fields: [spaceId], references: [spaceId], onDelete: Cascade)
-  spaceId             String
+  Space            Space   @relation("RSpaceToTodos", fields: [spaceId], references: [spaceId], onDelete: Cascade)
+  spaceId          String
   // --- FIELDS ---
-  isArchived          Boolean @default(false)
-  isDraft             Boolean @default(false)
-  isDeleted           Boolean @default(false)
-  name                String?
-  sortOrder           Int     @default(0)
+  isArchived       Boolean @default(false)
+  isDraft          Boolean @default(false)
+  isDeleted        Boolean @default(false)
+  name             String?
+  sortOrder        Int     @default(0)
 }
 
 model User {

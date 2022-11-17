@@ -9,15 +9,22 @@ const UtilsApiMutationsCreate = async ({ args, versionNext, spaceId, tx }) => {
 		}
 	})
 
-	return await tx.todo.create({
-		data: {
-			// --- RELATIONS ---
-			Space: { connect: { spaceId } },
-			// --- FIELDS ---
-			...args,
-			lastModifiedVersion: versionNext
-		}
-	})
+	try {
+		await tx.todo.create({
+			data: {
+				// --- SYSTEM ---
+				versionUpdatedAt: versionNext,
+				// --- RELATIONS ---
+				Space: { connect: { spaceId } },
+				// --- FIELDS ---
+				...args
+			}
+		})
+	} catch (err) {
+		console.error(err)
+	}
+
+	return
 }
 
 export default UtilsApiMutationsCreate
