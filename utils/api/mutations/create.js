@@ -4,9 +4,7 @@ const UtilsApiMutationsCreate = async ({ args, versionNext, spaceId, tx }) => {
 		where: {
 			AND: [{ isArchived: false }, { isDeleted: false }, { isDraft: false }, { spaceId }]
 		},
-		data: {
-			sortOrder: { increment: 1 }
-		}
+		data: { sortOrder: { increment: 1 } }
 	})
 
 	try {
@@ -18,7 +16,8 @@ const UtilsApiMutationsCreate = async ({ args, versionNext, spaceId, tx }) => {
 				Space: { connect: { spaceId } },
 				// --- FIELDS ---
 				...args
-			}
+			},
+			select: { todoId: true }
 		})
 	} catch (err) {
 		console.error(err)

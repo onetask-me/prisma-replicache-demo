@@ -21,22 +21,12 @@ const UtilsApiMutations = async ({ lastMutationId, mutations, spaceId, tx, versi
 
 		console.log('Processing mutation', nextMutationId, JSON.stringify(mutation))
 
-		switch (mutation.name) {
-			case 'create':
-				await utilApiMutationsCreate({ args: mutation.args, versionNext, spaceId, tx })
-				break
-
-			case 'update':
-				await utilApiMutationsUpdate({ args: mutation.args, versionNext, spaceId, tx })
-				break
-
-			case 'delete':
-				await utilApiMutationsDelete({ args: mutation.args, versionNext, spaceId, tx })
-				break
-
-			default:
-				throw new Error(`Unknown mutation: ${mutation.name}`)
-		}
+		if (mutation.name === 'create')
+			await utilApiMutationsCreate({ args: mutation.args, versionNext, spaceId, tx })
+		else if (mutation.name === 'update')
+			await utilApiMutationsUpdate({ args: mutation.args, versionNext, spaceId, tx })
+		else if (mutation.name === 'delete')
+			await utilApiMutationsDelete({ args: mutation.args, versionNext, spaceId, tx })
 	}
 
 	return { data: versionNext }

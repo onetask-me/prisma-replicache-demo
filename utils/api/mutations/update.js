@@ -9,11 +9,14 @@ const UtilsApiMutationsUpdate = async ({ args, versionNext, spaceId, tx }) => {
 				Space: { connect: { spaceId } },
 				// --- FIELDS ---
 				...args
-			}
+			},
+			select: { todoId: true }
 		})
 	} catch (err) {
 		console.error(err)
 	}
+
+	return
 }
 
 export default UtilsApiMutationsUpdate

@@ -12,6 +12,8 @@ const UtilsApiMutationsDelete = async ({ args, versionNext, spaceId, tx }) => {
 	} catch (err) {
 		console.error(err)
 	}
+
+	return
 }
 
 export default UtilsApiMutationsDelete

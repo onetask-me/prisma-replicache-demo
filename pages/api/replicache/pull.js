@@ -31,7 +31,7 @@ const PagesApiReplicachePull = async (req, res) => {
 		})
 
 		// #3. Get the highest authoritative version number
-		const replicacheVersion = apiEntriesTodoGet?.length
+		const version = apiEntriesTodoGet?.length
 			? Math.max(...apiEntriesTodoGet?.map(x => x.versionUpdatedAt))
 			: 0
 
@@ -50,7 +50,7 @@ const PagesApiReplicachePull = async (req, res) => {
 			)
 
 		// #5. Return object to client
-		res.json({ lastMutationID: lastMutationId, cookie: replicacheVersion, patch })
+		res.json({ lastMutationID: lastMutationId, cookie: version, patch })
 	})
 }
 

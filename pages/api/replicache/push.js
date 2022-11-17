@@ -48,7 +48,7 @@ const PagesApiReplicachePush = async (req, res) => {
 		// #5. Save new version to Space
 		const { data: versionUpdated } = await utilApiVersionSave({ tx, spaceId, version: versionNext })
 
-		return { data: versionUpdated }
+		return { data: versionUpdated?.version }
 	})
 
 	// #6. Poke client(s) to send a pull.
