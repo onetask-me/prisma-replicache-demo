@@ -1,4 +1,4 @@
-const UtilsApiMutationsCreate = async ({ args, nextMutationId, spaceId, tx }) => {
+const UtilsApiMutationsCreate = async ({ args, versionNext, spaceId, tx }) => {
 	// Update sort order
 	await tx.todo.updateMany({
 		where: {
@@ -15,7 +15,7 @@ const UtilsApiMutationsCreate = async ({ args, nextMutationId, spaceId, tx }) =>
 			Space: { connect: { spaceId } },
 			// --- FIELDS ---
 			...args,
-			lastModifiedVersion: nextMutationId
+			lastModifiedVersion: versionNext
 		}
 	})
 }

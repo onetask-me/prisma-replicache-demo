@@ -14,8 +14,10 @@ const PagesApiReplicachePush = async (req, res) => {
 	const { data: user, error: userErr } = await utilAuth(req, res)
 	if (!user || userErr) return res.status(401)
 
+	// Provided by Replicache
 	const { clientID, mutations } = req.body
 
+	// Provided by client
 	const { spaceId } = req.query
 
 	if (!clientID || !spaceId || !mutations) return res.status(403)
@@ -36,7 +38,8 @@ const PagesApiReplicachePush = async (req, res) => {
 			lastMutationId,
 			mutations,
 			spaceId,
-			tx
+			tx,
+			versionNext
 		})
 
 		// #4. Save mutation Id to Client
@@ -49,7 +52,7 @@ const PagesApiReplicachePush = async (req, res) => {
 	})
 
 	// #6. Poke client(s) to send a pull.
-	// await utilApiPokeSend()
+	await utilApiPokeSend()
 
 	res.json({ done: true })
 }

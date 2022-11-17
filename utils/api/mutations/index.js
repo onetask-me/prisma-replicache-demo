@@ -3,7 +3,7 @@ import utilApiMutationsCreate from 'utils/api/mutations/create'
 import utilApiMutationsDelete from 'utils/api/mutations/delete'
 import utilApiMutationsUpdate from 'utils/api/mutations/update'
 
-const UtilsApiMutations = async ({ lastMutationId, mutations, spaceId, tx }) => {
+const UtilsApiMutations = async ({ lastMutationId, mutations, spaceId, tx, versionNext }) => {
 	let nextMutationId = lastMutationId
 
 	for await (const mutation of mutations) {
@@ -23,15 +23,15 @@ const UtilsApiMutations = async ({ lastMutationId, mutations, spaceId, tx }) => 
 
 		switch (mutation.name) {
 			case 'create':
-				await utilApiMutationsCreate({ args: mutation.args, nextMutationId, spaceId, tx })
+				await utilApiMutationsCreate({ args: mutation.args, versionNext, spaceId, tx })
 				break
 
 			case 'update':
-				await utilApiMutationsUpdate({ args: mutation.args, nextMutationId, spaceId, tx })
+				await utilApiMutationsUpdate({ args: mutation.args, versionNext, spaceId, tx })
 				break
 
 			case 'delete':
-				await utilApiMutationsDelete({ args: mutation.args, nextMutationId, spaceId, tx })
+				await utilApiMutationsDelete({ args: mutation.args, versionNext, spaceId, tx })
 				break
 
 			default:
@@ -39,7 +39,7 @@ const UtilsApiMutations = async ({ lastMutationId, mutations, spaceId, tx }) => 
 		}
 	}
 
-	return { data: nextMutationId }
+	return { data: versionNext }
 }
 
 export default UtilsApiMutations

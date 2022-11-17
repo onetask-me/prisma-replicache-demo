@@ -1,4 +1,4 @@
-const UtilsApiMutationsUpdate = async ({ args, nextMutationId, spaceId, tx }) =>
+const UtilsApiMutationsUpdate = async ({ args, versionNext, spaceId, tx }) =>
 	await tx.todo.update({
 		where: { todoId: args.todoId },
 		data: {
@@ -6,7 +6,7 @@ const UtilsApiMutationsUpdate = async ({ args, nextMutationId, spaceId, tx }) =>
 			Space: { connect: { spaceId } },
 			// --- FIELDS ---
 			...args,
-			lastModifiedVersion: nextMutationId
+			lastModifiedVersion: versionNext
 		}
 	})
 

@@ -33,12 +33,12 @@ const PagesApiReplicachePull = async (req, res) => {
 		// #3. Get the highest authoritative version number
 		const replicacheVersion = apiEntriesTodoGet?.length
 			? Math.max(...apiEntriesTodoGet?.map(x => x.lastModifiedVersion))
-			: null
+			: 0
 
 		// #4. Put together a patch with instructions for the client
 		const patch = []
 
-		if (replicacheVersion === null) patch.push({ op: 'clear' })
+		if (cookie === null) patch.push({ op: 'clear' })
 
 		if (apiEntriesTodoGet?.length)
 			patch.push(
