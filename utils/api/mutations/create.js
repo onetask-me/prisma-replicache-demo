@@ -1,4 +1,8 @@
 const UtilsApiMutationsCreate = async ({ args, versionNext, spaceId, tx }) => {
+	const prismaTodoFindUnique = await tx.todo.findUnique({ where: { todoId: args.todoId } })
+
+	if (prismaTodoFindUnique) return
+
 	// Update sort order
 	await tx.todo.updateMany({
 		where: {
@@ -20,7 +24,7 @@ const UtilsApiMutationsCreate = async ({ args, versionNext, spaceId, tx }) => {
 			select: { todoId: true }
 		})
 	} catch (err) {
-		console.error(err)
+		console.error(err.message)
 	}
 
 	return

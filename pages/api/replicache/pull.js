@@ -1,3 +1,5 @@
+// Packages
+import { Prisma } from '@prisma/client'
 // Utilities
 import prisma from 'utils/prisma'
 import utilApiEntriesTodoGet from 'utils/api/entries/todoGet'
@@ -18,40 +20,45 @@ const PagesApiReplicachePull = async (req, res) => {
 
 	if (!clientID || !spaceId || cookie === undefined) return res.status(403)
 
-	await prisma.$transaction(async tx => {
-		// #1. Get last mutation Id for the current client
-		let { data: lastMutationId } = await utilApiLastMutationIdGet({ clientID, tx })
+	await prisma.$transaction(
+		async tx => {
+			// #1. Get last mutation Id for the current client
+			let { data: lastMutationId } = await utilApiLastMutationIdGet({ clientID, tx })
 
-		// #2. Get all transactions done after the last client request for the current space
-		const { data: apiEntriesTodoGet } = await utilApiEntriesTodoGet({
-			cookie,
-			spaceId,
-			tx,
-			userId: user.id
-		})
+			// #2. Get all transactions done after the last client request for the current space
+			const { data: apiEntriesTodoGet } = await utilApiEntriesTodoGet({
+				cookie,
+				spaceId,
+				tx,
+				userId: user.id
+			})
 
-		// #3. Get the highest authoritative version number
-		const version = apiEntriesTodoGet?.length
-			? Math.max(...apiEntriesTodoGet?.map(x => x.versionUpdatedAt))
-			: 0
+			// #3. Get the highest authoritative version number
+			const version = apiEntriesTodoGet?.length
+				? Math.max(...apiEntriesTodoGet?.map(x => x.versionUpdatedAt))
+				: 0
 
-		// #4. Put together a patch with instructions for the client
-		const patch = []
+			// #4. Put together a patch with instructions for the client
+			const patch = []
 
-		if (cookie === null) patch.push({ op: 'clear' })
+			if (cookie === null) patch.push({ op: 'clear' })
 
-		if (apiEntriesTodoGet?.length)
-			patch.push(
-				...apiEntriesTodoGet.map(todo => ({
-					op: !todo.isDeleted ? 'put' : 'del',
-					key: `todo/${todo.todoId}`,
-					value: { ...todo }
-				}))
-			)
+			if (apiEntriesTodoGet?.length)
+				patch.push(
+					...apiEntriesTodoGet.map(todo => ({
+						op: !todo.isDeleted ? 'put' : 'del',
+						key: `todo/${todo.todoId}`,
+						value: { ...todo }
+					}))
+				)
 
-		// #5. Return object to client
-		res.json({ lastMutationID: lastMutationId, cookie: version, patch })
-	})
+			// #5. Return object to client
+			res.json({ lastMutationID: lastMutationId, cookie: version, patch })
+		},
+		{
+			isolationLevel: Prisma.TransactionIsolationLevel.Serializable // Required for Replicache to work
+		}
+	)
 }
 
 export default PagesApiReplicachePull

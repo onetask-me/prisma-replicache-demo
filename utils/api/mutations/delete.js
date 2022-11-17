@@ -10,7 +10,7 @@ const UtilsApiMutationsDelete = async ({ args, versionNext, spaceId, tx }) => {
 			}
 		})
 	} catch (err) {
-		console.error(err)
+		console.error(err.message)
 	}
 
 	return

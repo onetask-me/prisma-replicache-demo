@@ -1,3 +1,5 @@
+// Packages
+import { Prisma } from '@prisma/client'
 // Utilities
 import prisma from 'utils/prisma'
 import utilApiLastMutationIdGet from 'utils/api/lastMutationIdGet'
@@ -22,31 +24,43 @@ const PagesApiReplicachePush = async (req, res) => {
 
 	if (!clientID || !spaceId || !mutations) return res.status(403)
 
-	const { data: versionLatest } = await prisma.$transaction(async tx => {
-		// #1. Get next `version` for space
-		const { data: versionNext } = await utilApiVersionGetNext({
-			tx,
-			spaceId,
-			userId: user.id
-		})
+	const { data: versionLatest } = await prisma.$transaction(
+		async tx => {
+			// #1. Get next `version` for space
+			const { data: versionNext } = await utilApiVersionGetNext({
+				tx,
+				spaceId,
+				userId: user.id
+			})
 
-		// #2. Get last mutation Id for client
-		let { data: lastMutationId } = await utilApiLastMutationIdGet({ clientID, tx })
+			// #2. Get last mutation Id for client
+			let { data: lastMutationId } = await utilApiLastMutationIdGet({ clientID, tx })
 
-		// #3. Iterate mutations, increase mutation Id on each iteration
-		const { data: nextMutationId } = await utilApiMutations({
-			lastMutationId,
-			mutations,
-			spaceId,
-			tx,
-			versionNext
-		})
+			// #3. Iterate mutations, increase mutation Id on each iteration
+			const { data: nextMutationId } = await utilApiMutations({
+				lastMutationId,
+				mutations,
+				spaceId,
+				tx,
+				versionNext
+			})
 
-		// #4. Save mutation Id to Client
-		await utilApiLastMutationIdSave({ clientID, nextMutationId, tx })
+			// #4. Save mutation Id to Client
+			await utilApiLastMutationIdSave({ clientID, nextMutationId, tx })
 
-		return { data: versionNext }
-	})
+			// #5. Save new version to Space
+			const { data: versionUpdated } = await utilApiVersionSave({
+				tx,
+				spaceId,
+				version: versionNext
+			})
+
+			return { data: versionUpdated?.version }
+		},
+		{
+			isolationLevel: Prisma.TransactionIsolationLevel.Serializable // Required for Replicache to work
+		}
+	)
 
 	// #6. Poke client(s) to send a pull.
 	await utilApiPokeSend()
