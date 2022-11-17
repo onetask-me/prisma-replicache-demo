@@ -58,7 +58,9 @@ const PagesApiReplicachePush = async (req, res) => {
 			return { data: versionUpdated?.version }
 		},
 		{
-			isolationLevel: Prisma.TransactionIsolationLevel.Serializable // Required for Replicache to work
+			isolationLevel: Prisma.TransactionIsolationLevel.Serializable, // Required for Replicache to work
+			maxWait: 5000, // default: 2000
+			timeout: 10000 // default: 5000
 		}
 	)
 
