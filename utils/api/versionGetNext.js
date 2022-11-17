@@ -11,9 +11,7 @@ const UtilsApiVersionGet = async ({ tx, spaceId, userId }) => {
 				// --- PUBLIC ID ---
 				spaceId,
 				// --- RELATIONS ---
-				User: { connect: { userId } },
-				// --- FIELDS ---
-				version: 0
+				User: { connect: { userId } }
 			},
 			select: { version: true }
 		})

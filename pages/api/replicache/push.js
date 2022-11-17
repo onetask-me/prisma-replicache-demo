@@ -45,10 +45,7 @@ const PagesApiReplicachePush = async (req, res) => {
 		// #4. Save mutation Id to Client
 		await utilApiLastMutationIdSave({ clientID, nextMutationId, tx })
 
-		// #5. Save new version to Space
-		const { data: versionUpdated } = await utilApiVersionSave({ tx, spaceId, version: versionNext })
-
-		return { data: versionUpdated?.version }
+		return { data: versionNext }
 	})
 
 	// #6. Poke client(s) to send a pull.
