@@ -63,6 +63,8 @@ const PagesApiReplicachePull = async (req, res) => {
 		}
 	)
 
+	console.log('pull →', Prisma.TransactionIsolationLevel.Serializable)
+
 	// #5. Return object to client
 	return res.json({ lastMutationID: lastMutationId, cookie: version, patch })
 }
