@@ -36,6 +36,8 @@ const PagesApiReplicachePush = async (req, res) => {
 			// #2. Get last mutation Id for client
 			let { data: lastMutationId } = await utilApiLastMutationIdGet({ clientID, tx })
 
+			console.log('*** Last mutation id', lastMutationId)
+
 			// #3. Iterate mutations, increase mutation Id on each iteration
 			const { data: nextMutationId } = await utilApiMutations({
 				lastMutationId,
