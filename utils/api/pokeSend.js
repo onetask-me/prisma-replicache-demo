@@ -14,6 +14,8 @@ const UtilsApiPokeSend = async () => {
 
 	// We need to use `await` here, otherwise Next.js will frequently kill the request and the poke won't get sent.
 	await pusher.trigger('replicache', 'poke', {})
+
+	return
 }
 
 export default UtilsApiPokeSend

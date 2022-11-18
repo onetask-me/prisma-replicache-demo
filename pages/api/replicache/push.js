@@ -67,8 +67,6 @@ const PagesApiReplicachePush = async (req, res) => {
 	// #6. Poke client(s) to send a pull.
 	await utilApiPokeSend()
 
-	console.log('push →', Prisma.TransactionIsolationLevel.Serializable)
-
 	return res.json({ done: versionLatest })
 }
 

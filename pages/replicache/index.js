@@ -22,8 +22,6 @@ const PagesReplicache = () => {
 
 	const todos = useSubscribe(rep, async tx => await tx.scan({ prefix: `todo/` }).toArray(), [rep])
 
-	console.log('Todos:', todos)
-
 	return (
 		<div>
 			<button onClick={() => signOut()}>Sign out</button>

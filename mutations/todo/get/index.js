@@ -1,9 +1,3 @@
-const MutationsTodoGet = async tx => {
-	const todos = await tx.scan().values().toArray()
-
-	console.log('Get todos:', todos)
-
-	return todos
-}
+const MutationsTodoGet = async tx => await tx.scan().values().toArray()
 
 export default MutationsTodoGet

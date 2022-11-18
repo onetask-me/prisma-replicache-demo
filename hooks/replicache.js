@@ -39,7 +39,7 @@ const HooksReplicache = () => {
 
 	useEffect(() => {
 		if (rep)
-			rep.experimentalWatch(x => setDiff(x), { prefix: '/todo', initialValuesInFirstDiff: true })
+			rep.experimentalWatch(x => setDiff(x), { prefix: 'todo/', initialValuesInFirstDiff: true })
 	}, [rep])
 
 	console.log(`diff`, diff)
