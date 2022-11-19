@@ -12,7 +12,6 @@ const HooksReplicache = () => {
 	const { user } = useUser()
 
 	const [rep, setRep] = useState(null)
-	const [diff, setDiff] = useState(null)
 
 	const spaceId = 'MyUniqueSpace'
 
@@ -36,13 +35,6 @@ const HooksReplicache = () => {
 			return () => void r.close()
 		}
 	}, [user?.id, spaceId])
-
-	useEffect(() => {
-		if (rep)
-			rep.experimentalWatch(x => setDiff(x), { prefix: 'todo/', initialValuesInFirstDiff: true })
-	}, [rep])
-
-	console.log(`diff`, diff)
 
 	return { data: rep }
 }
