@@ -6,36 +6,36 @@ import utilApiMutationsUpdate from 'utils/api/mutations/update'
 const UtilsApiMutations = async ({ lastMutationId, mutations, spaceId, tx, versionNext }) => {
 	let nextMutationId = lastMutationId
 
-	nextMutationId++
-
 	for await (const mutation of mutations) {
-		if (mutation.id < nextMutationId) {
+		// Verify before processing mutation
+		if (mutation.id < nextMutationId + 1) {
 			console.log(`Mutation ${mutation.id} has already been processed - skipping`)
 			continue
 		}
 
-		if (mutation.id > nextMutationId) {
+		if (mutation.id > nextMutationId + 1) {
 			console.warn(`Mutation ${mutation.id} is from the future - aborting`)
 			break
 		}
 
-		console.log('Processing mutation', nextMutationId, JSON.stringify(mutation))
+		try {
+			console.log('Processing mutation', nextMutationId + 1, JSON.stringify(mutation))
 
-		if (mutation.name === 'create')
-			await utilApiMutationsCreate({ args: mutation.args, versionNext, spaceId, tx })
-		else if (mutation.name === 'update')
-			await utilApiMutationsUpdate({ args: mutation.args, versionNext, spaceId, tx })
-		else if (mutation.name === 'delete')
-			await utilApiMutationsDelete({ args: mutation.args, versionNext, spaceId, tx })
+			if (mutation.name === 'create')
+				await utilApiMutationsCreate({ args: mutation.args, versionNext, spaceId, tx })
+			else if (mutation.name === 'update')
+				await utilApiMutationsUpdate({ args: mutation.args, versionNext, spaceId, tx })
+			else if (mutation.name === 'delete')
+				await utilApiMutationsDelete({ args: mutation.args, versionNext, spaceId, tx })
 
-		console.log('Completed mutation', mutation.id)
-
-		nextMutationId++
+			// Only increase mutation id upon successful mutation
+			nextMutationId++
+		} catch (err) {
+			console.error(err)
+		}
 	}
 
-	console.log('Returning version', versionNext)
-
-	return { data: versionNext }
+	return { data: nextMutationId }
 }
 
 export default UtilsApiMutations
