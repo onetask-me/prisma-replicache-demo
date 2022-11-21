@@ -10,9 +10,9 @@ generator js {
   previewFeatures = ["interactiveTransactions", "referentialIntegrity"]
 }
 
-model ReplicacheClient {
+model Replicache {
   // --- PUBLIC ID ---
-  clientId       String @unique
+  replicacheId   String @unique
   // --- FIELDS ---
   lastMutationId Int
 }

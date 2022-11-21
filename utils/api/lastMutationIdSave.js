@@ -1,8 +1,8 @@
 const UtilsApiLastMutationIdSave = async ({ clientID, nextMutationId, tx }) => {
 	console.log('Setting', clientID, 'lastMutationId to', nextMutationId)
 
-	await tx.replicacheClient.update({
-		where: { clientId: clientID },
+	await tx.replicache.update({
+		where: { replicacheId: clientID },
 		data: { lastMutationId: nextMutationId }
 	})
 }
