@@ -20,10 +20,10 @@ const PagesApiReplicachePull = async (req, res) => {
 
 	if (!clientID || !spaceId || cookie === undefined) return res.status(403)
 
-	const { lastMutationId, version, patch } = await prisma.$transaction(
+	const { lastMutationId, versionAt, patch } = await prisma.$transaction(
 		async tx => {
 			let lastMutationId,
-				version,
+				versionAt,
 				patch = []
 
 			// #1. Get last mutation Id for the current client
@@ -40,7 +40,7 @@ const PagesApiReplicachePull = async (req, res) => {
 			})
 
 			// #3. Get the highest authoritative version number
-			version = apiEntriesTodoGet?.length
+			versionAt = apiEntriesTodoGet?.length
 				? Math.max(...apiEntriesTodoGet?.map(x => x.versionUpdatedAt))
 				: 0
 
@@ -60,7 +60,7 @@ const PagesApiReplicachePull = async (req, res) => {
 					})
 				)
 
-			return { lastMutationId, version, patch }
+			return { lastMutationId, versionAt, patch }
 		},
 		{
 			isolationLevel: Prisma.TransactionIsolationLevel.Serializable, // Required for Replicache to work
@@ -70,7 +70,7 @@ const PagesApiReplicachePull = async (req, res) => {
 	)
 
 	// #5. Return object to client
-	return res.json({ lastMutationID: lastMutationId, cookie: version, patch })
+	return res.json({ lastMutationID: lastMutationId, cookie: versionAt, patch })
 }
 
 export default PagesApiReplicachePull

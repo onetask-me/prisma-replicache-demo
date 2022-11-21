@@ -52,10 +52,10 @@ const PagesApiReplicachePush = async (req, res) => {
 			const { data: versionUpdated } = await utilApiVersionSave({
 				tx,
 				spaceId,
-				version: versionNext
+				versionAt: versionNext
 			})
 
-			return { data: versionUpdated?.version }
+			return { data: versionUpdated?.versionAt }
 		},
 		{
 			isolationLevel: Prisma.TransactionIsolationLevel.Serializable, // Required for Replicache to work

@@ -20,13 +20,13 @@ model Replicache {
 // Replicache syncs “spaces”, i.e. groups of related data (such as to-dos and their connected categories)
 model Space {
   // --- SYSTEM ---
-  version Int    @default(0)
+  versionAt Int    @default(0)
   // --- PUBLIC ID ---
-  spaceId String @unique
+  spaceId   String @unique
   // --- RELATIONS ---
-  Todos   Todo[] @relation("RSpaceToTodos")
-  User    User   @relation("RUserToSpaces", fields: [userId], references: [userId], onDelete: Cascade)
-  userId  String
+  Todos     Todo[] @relation("RSpaceToTodos")
+  User      User   @relation("RUserToSpaces", fields: [userId], references: [userId], onDelete: Cascade)
+  userId    String
 }
 
 model Todo {
