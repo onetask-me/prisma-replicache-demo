@@ -27,8 +27,8 @@ const PagesReplicache = () => {
 			<button onClick={() => signOut()}>Sign out</button>
 
 			<button
-				onClick={async () => {
-					await rep.mutate.create({
+				onClick={() => {
+					rep.mutate.create({
 						todoId: utilGenerateId(),
 						name: `To-do #${demoTodoSequence}`,
 						sortOrder: 0
@@ -46,9 +46,9 @@ const PagesReplicache = () => {
 						?.map(todo => (
 							<p key={todo.todoId}>
 								<button
-									onClick={async () =>
-										await rep.mutate.update({ todoId: todo.todoId, name: utilGenerateId() })
-									}
+									onClick={() => {
+										rep.mutate.update({ todoId: todo.todoId, name: utilGenerateId() })
+									}}
 								>
 									Change Name
 								</button>{' '}
