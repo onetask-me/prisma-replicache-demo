@@ -1,7 +1,7 @@
-const UtilsApiMutationsDelete = async ({ args, versionNext, spaceId, tx }) => {
+const UtilsApiMutationsDelete = async ({ args, spaceId, tx, versionNext }) => {
 	try {
 		await tx.todo.updateMany({
-			where: { AND: [{ todoId: args, spaceId }] },
+			where: { AND: [{ todoId: args }, { spaceId }] },
 			data: {
 				// --- SYSTEM ---
 				versionUpdatedAt: versionNext,

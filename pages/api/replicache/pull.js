@@ -26,17 +26,17 @@ const PagesApiReplicachePull = async (req, res) => {
 				versionAt,
 				patch = []
 
-			// #1. Get last mutation Id for the current client
-			let { data: mutationId } = await utilApiLastMutationIdGet({ clientID, tx })
+			// #1. Get last mutation Id for the current replicache client
+			let { data: mutationId } = await utilApiLastMutationIdGet({ replicacheId: clientID, tx })
 
 			lastMutationId = mutationId
 
 			// #2. Get all transactions done after the last client request for the current space
 			const { data: apiEntriesTodoGet } = await utilApiEntriesTodoGet({
-				cookie,
 				spaceId,
 				tx,
-				userId: user.id
+				userId: user.id,
+				versionAt: cookie
 			})
 
 			// #3. Get the highest authoritative version number

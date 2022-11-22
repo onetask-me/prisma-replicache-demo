@@ -1,4 +1,4 @@
-const UtilsApiMutationsUpdate = async ({ args, versionNext, spaceId, tx }) => {
+const UtilsApiMutationsUpdate = async ({ args, spaceId, tx, versionNext }) => {
 	try {
 		await tx.todo.update({
 			where: { todoId: args.todoId },

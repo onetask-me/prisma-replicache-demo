@@ -22,11 +22,11 @@ const UtilsApiMutations = async ({ lastMutationId, mutations, spaceId, tx, versi
 			console.log('Processing mutation', nextMutationId + 1, JSON.stringify(mutation))
 
 			if (mutation.name === 'create')
-				await utilApiMutationsCreate({ args: mutation.args, versionNext, spaceId, tx })
+				await utilApiMutationsCreate({ args: mutation.args, spaceId, tx, versionNext })
 			else if (mutation.name === 'update')
-				await utilApiMutationsUpdate({ args: mutation.args, versionNext, spaceId, tx })
+				await utilApiMutationsUpdate({ args: mutation.args, spaceId, tx, versionNext })
 			else if (mutation.name === 'delete')
-				await utilApiMutationsDelete({ args: mutation.args, versionNext, spaceId, tx })
+				await utilApiMutationsDelete({ args: mutation.args, spaceId, tx, versionNext })
 
 			// Only increase mutation id upon successful mutation
 			nextMutationId++

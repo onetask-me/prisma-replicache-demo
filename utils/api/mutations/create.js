@@ -1,4 +1,4 @@
-const UtilsApiMutationsCreate = async ({ args, versionNext, spaceId, tx }) => {
+const UtilsApiMutationsCreate = async ({ args, spaceId, tx, versionNext }) => {
 	const prismaTodoFindUnique = await tx.todo.findUnique({ where: { todoId: args.todoId } })
 
 	if (prismaTodoFindUnique) return

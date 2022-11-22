@@ -5,21 +5,7 @@ const UtilsApiVersionGet = async ({ tx, spaceId, userId }) => {
 		select: { versionAt: true }
 	})
 
-	if (prismaSpaceFindFirst?.versionAt === undefined) {
-		const prismaSpaceCreateOne = await tx.space.create({
-			data: {
-				// --- PUBLIC ID ---
-				spaceId,
-				// --- RELATIONS ---
-				User: { connect: { userId } },
-				// --- FIELDS ---
-				versionAt: 0
-			},
-			select: { versionAt: true }
-		})
-
-		return { data: prismaSpaceCreateOne.versionAt + 1 }
-	}
+	if (!prismaSpaceFindFirst) throw new Error('space_not_found')
 
 	return { data: prismaSpaceFindFirst.versionAt + 1 }
 }

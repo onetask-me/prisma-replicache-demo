@@ -14,7 +14,7 @@ model Replicache {
   // --- PUBLIC ID ---
   replicacheId   String @unique
   // --- FIELDS ---
-  lastMutationId Int
+  lastMutationId Int    @default(0)
 }
 
 // Replicache syncs “spaces”, i.e. groups of related data (such as to-dos and their connected categories)
