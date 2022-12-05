@@ -4,6 +4,7 @@ import { Prisma } from '@prisma/client'
 import prisma from 'utils/prisma'
 import utilApiEntriesTodoGet from 'utils/api/entries/todoGet'
 import utilApiLastMutationIdGet from 'utils/api/lastMutationIdGet'
+import utilApiVersionGet from 'utils/api/versionGet'
 import utilAuth from 'utils/auth'
 
 const PagesApiReplicachePull = async (req, res) => {
@@ -23,26 +24,23 @@ const PagesApiReplicachePull = async (req, res) => {
 	const { lastMutationId, versionAt, patch } = await prisma.$transaction(
 		async tx => {
 			let lastMutationId,
-				versionAt,
 				patch = []
 
-			// #1. Get last mutation Id for the current replicache client
+			// #1. Get `version` for space
+			const { data: version } = await utilApiVersionGet({ tx, spaceId, userId: user.id })
+
+			// #2. Get last mutation Id for the current replicache client
 			let { data: mutationId } = await utilApiLastMutationIdGet({ replicacheId: clientID, tx })
 
 			lastMutationId = mutationId
 
-			// #2. Get all transactions done after the last client request for the current space
+			// #3. Get all transactions done after the last client request for the current space
 			const { data: apiEntriesTodoGet } = await utilApiEntriesTodoGet({
 				spaceId,
 				tx,
 				userId: user.id,
 				versionAt: cookie
 			})
-
-			// #3. Get the highest authoritative version number
-			versionAt = apiEntriesTodoGet?.length
-				? Math.max(...apiEntriesTodoGet?.map(x => x.versionUpdatedAt))
-				: 0
 
 			// #4. Put together a patch with instructions for the client
 			if (cookie === null) patch.push({ op: 'clear' })
@@ -60,7 +58,7 @@ const PagesApiReplicachePull = async (req, res) => {
 					})
 				)
 
-			return { lastMutationId, versionAt, patch }
+			return { lastMutationId, versionAt: version, patch }
 		},
 		{
 			isolationLevel: Prisma.TransactionIsolationLevel.Serializable, // Required for Replicache to work

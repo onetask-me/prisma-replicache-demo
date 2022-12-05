@@ -7,7 +7,7 @@ const UtilsApiVersionGet = async ({ tx, spaceId, userId }) => {
 
 	if (!prismaSpaceFindFirst) throw new Error('space_not_found')
 
-	return { data: prismaSpaceFindFirst.versionAt + 1 }
+	return { data: prismaSpaceFindFirst.versionAt }
 }
 
 export default UtilsApiVersionGet

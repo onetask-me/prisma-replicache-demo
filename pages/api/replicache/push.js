@@ -4,7 +4,7 @@ import { Prisma } from '@prisma/client'
 import prisma from 'utils/prisma'
 import utilApiLastMutationIdGet from 'utils/api/lastMutationIdGet'
 import utilApiLastMutationIdSave from 'utils/api/lastMutationIdSave'
-import utilApiVersionGetNext from 'utils/api/versionGetNext'
+import utilApiVersionGet from 'utils/api/versionGet'
 import utilApiVersionSave from 'utils/api/versionSave'
 import utilApiMutations from 'utils/api/mutations'
 import utilApiPokeSend from 'utils/api/pokeSend'
@@ -27,11 +27,9 @@ const PagesApiReplicachePush = async (req, res) => {
 	const { data: versionLatest } = await prisma.$transaction(
 		async tx => {
 			// #1. Get next `version` for space
-			const { data: versionNext } = await utilApiVersionGetNext({
-				tx,
-				spaceId,
-				userId: user.id
-			})
+			const { data: version } = await utilApiVersionGet({ tx, spaceId, userId: user.id })
+
+			const versionNext = version + 1
 
 			// #2. Get last mutation Id for client
 			let { data: lastMutationId } = await utilApiLastMutationIdGet({ replicacheId: clientID, tx })
