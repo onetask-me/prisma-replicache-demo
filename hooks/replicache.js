@@ -44,7 +44,7 @@ const HooksReplicache = ({ setSpaceId, setUserId, spaceId, userId }) => {
 				window.localStorage.removeItem('spaceId')
 				setSpaceId(null)
 
-				router.push('/auth')
+				router.push('/login')
 			}
 
 			setRep(r)
