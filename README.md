@@ -1,6 +1,6 @@
-## Replicache + Prisma Demo
+## Prisma Interactive Transactions + Replicache 🎉
 
-> Replicache Demo using Prisma and NextJS on a PlanetScale database.
+Replicache Demo using Prisma and NextJS on a PlanetScale database.
 
 ## PlanetScale Test Database
 
