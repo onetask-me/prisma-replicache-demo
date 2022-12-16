@@ -1,24 +1,19 @@
 // Packages
-import { useState, useEffect } from 'react'
 import { useSubscribe } from 'replicache-react'
 // Utilities
 import utilGenerateId from 'utils/generateId'
 // Hooks
+import useGetUserIdAndSpaceId from 'hooks/getUserIdAndSpaceId'
 import usePokeListener from 'hooks/pokeListener'
 import useReplicache from 'hooks/replicache'
 import useSignInRequired from 'hooks/signInRequired'
 
 const PagesHome = () => {
-	const [spaceId, setSpaceId] = useState(null)
-	const [userId, setUserId] = useState(null)
-
-	useEffect(() => {
-		setSpaceId(window.localStorage.getItem('spaceId'))
-
-		setUserId(getCookie('userId'))
-	}, [])
-
 	useSignInRequired()
+
+	const {
+		data: { spaceId, userId }
+	} = useGetUserIdAndSpaceId()
 
 	const { data: rep } = useReplicache()
 
