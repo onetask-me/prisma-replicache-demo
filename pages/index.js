@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import { useSubscribe } from 'replicache-react'
 import { useRouter } from 'next/router'
-import { deleteCookie } from 'cookies-next'
 // Utilities
 import utilGenerateId from 'utils/generateId'
 // Hooks
@@ -59,10 +58,8 @@ const PagesHome = () => {
 
 			<button
 				onClick={() => {
-					deleteCookie('userId')
 					setUserId(null)
 
-					window.localStorage.removeItem('spaceId')
 					setSpaceId(null)
 				}}
 			>
