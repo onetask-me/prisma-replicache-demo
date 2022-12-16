@@ -59,8 +59,11 @@ const PagesHome = () => {
 
 			<button
 				onClick={() => {
-					if (spaceId === window.localStorage.getItem('spaceId')) setSpaceId(utilGenerateId())
-					else setSpaceId(window.localStorage.getItem('spaceId'))
+					setSpaceId(prev =>
+						prev === window.localStorage.getItem('spaceId1')
+							? window.localStorage.getItem('spaceId2')
+							: window.localStorage.getItem('spaceId1')
+					)
 				}}
 			>
 				Switch space

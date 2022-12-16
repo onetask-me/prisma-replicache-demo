@@ -15,7 +15,7 @@ const HooksReplicache = ({ setSpaceId, setUserId, spaceId, userId }) => {
 	const [rep, setRep] = useState(null)
 
 	useEffect(() => {
-		setSpaceId(window.localStorage.getItem('spaceId'))
+		setSpaceId(window.localStorage.getItem('spaceId1'))
 
 		setUserId(getCookie('userId'))
 	}, [])
@@ -35,13 +35,13 @@ const HooksReplicache = ({ setSpaceId, setUserId, spaceId, userId }) => {
 				}
 			})
 
-			// This gets called when the push/pull API returns a 401.
+			// This gets called when the push/pull API returns a `401`.
 			r.getAuth = () => {
-				// In case the user is logged out, we need to delete the cookie.
 				deleteCookie('userId')
 				setUserId(null)
 
-				window.localStorage.removeItem('spaceId')
+				window.localStorage.removeItem('spaceId1')
+				window.localStorage.removeItem('spaceId2')
 				setSpaceId(null)
 
 				router.push('/login')
