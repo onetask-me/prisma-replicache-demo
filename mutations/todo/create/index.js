@@ -2,8 +2,8 @@
 import mutationTodoGet from 'mutations/todo/get'
 import mutationTodoUpdate from 'mutations/todo/update'
 
-const MutationsTodoCreate = async (tx, args) => {
-	const key = `todo/${args.todoId}`
+const MutationsTodoCreate = async (tx, args, spaceId) => {
+	const key = `${spaceId}/todo/${args.todoId}`
 
 	if (await tx.has(key)) throw new Error('Todo already exists')
 

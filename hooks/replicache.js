@@ -27,12 +27,14 @@ const HooksReplicache = () => {
 				pushURL: `/api/replicache/push?spaceId=${spaceId}`,
 				pullURL: `/api/replicache/pull?spaceId=${spaceId}`,
 				mutators: {
-					create: mutationTodoCreate,
-					delete: mutationTodoDelete,
-					get: mutationTodoGet,
-					update: mutationTodoUpdate
+					create: (tx, args) => mutationTodoCreate(tx, args, spaceId),
+					delete: (tx, args) => mutationTodoDelete(tx, args, spaceId),
+					get: (tx, args) => mutationTodoGet(tx, args, spaceId),
+					update: (tx, args) => mutationTodoUpdate(tx, args, spaceId)
 				}
 			})
+
+			console.log(r)
 
 			setRep(r)
 

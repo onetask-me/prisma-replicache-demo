@@ -19,14 +19,18 @@ const PagesHome = () => {
 
 	usePokeListener({ rep })
 
-	const todos = useSubscribe(rep, async tx => await tx.scan({ prefix: `todo/` }).toArray(), [rep])
+	const todos = useSubscribe(
+		rep,
+		async tx => await tx.scan({ prefix: `${spaceId}/todo/` }).toArray(),
+		[rep]
+	)
 
 	return (
 		<div>
 			<h1>Home</h1>
 
-			<div>User ID: {userId}</div>
-			<div>Space ID: {spaceId}</div>
+			<p>User ID: {userId}</p>
+			<p>Space ID: {spaceId}</p>
 
 			<button
 				onClick={() => {
@@ -37,7 +41,7 @@ const PagesHome = () => {
 					})
 				}}
 			>
-				Create new
+				Create a new task
 			</button>
 
 			{todos?.some(x => x)
