@@ -34,8 +34,6 @@ const HooksReplicache = () => {
 				}
 			})
 
-			console.log(r)
-
 			setRep(r)
 
 			return () => void r.close()

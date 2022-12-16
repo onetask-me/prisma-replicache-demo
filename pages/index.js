@@ -1,4 +1,5 @@
 // Packages
+import { PushError, PullError } from 'replicache'
 import { useSubscribe } from 'replicache-react'
 // Utilities
 import utilGenerateId from 'utils/generateId'
@@ -24,6 +25,8 @@ const PagesHome = () => {
 		async tx => await tx.scan({ prefix: `${spaceId}/todo/` }).toArray(),
 		[rep]
 	)
+
+	console.log({ PushError, PullError })
 
 	return (
 		<div>
