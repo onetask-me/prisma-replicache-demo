@@ -17,7 +17,7 @@ const PagesLogin = () => {
 				window.localStorage.setItem('spaceId', spaceId1)
 
 				// In this demo, we’re just using basic cookies and not implementing a secure authentication system since auth isn’t the purpose of this demo. In a production app you’d implement a secure authentication system.
-				await fetch(`/api/auth?spaceId=${spaceId}`, {
+				await fetch(`/api/auth`, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
