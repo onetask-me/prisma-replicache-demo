@@ -29,7 +29,7 @@ const PagesHome = () => {
 			<div>
 				<button
 					onClick={() => {
-						router.push('/auth')
+						router.push('/login')
 					}}
 				>
 					Log in
@@ -42,7 +42,31 @@ const PagesHome = () => {
 			<h1>Home</h1>
 
 			<p>User ID: {userId}</p>
+
+			<button
+				onClick={() => {
+					setUserId(null)
+
+					setSpaceId(null)
+				}}
+			>
+				Log out
+			</button>
+
+			<p>---</p>
+
 			<p>Space ID: {spaceId}</p>
+
+			<button
+				onClick={() => {
+					if (spaceId === window.localStorage.getItem('spaceId')) setSpaceId(utilGenerateId())
+					else setSpaceId(window.localStorage.getItem('spaceId'))
+				}}
+			>
+				Switch space
+			</button>
+
+			<p>---</p>
 
 			<button
 				onClick={() => {
@@ -54,16 +78,6 @@ const PagesHome = () => {
 				}}
 			>
 				Create a new task
-			</button>
-
-			<button
-				onClick={() => {
-					setUserId(null)
-
-					setSpaceId(null)
-				}}
-			>
-				Log out
 			</button>
 
 			{todos?.some(x => x)

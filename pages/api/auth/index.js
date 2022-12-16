@@ -5,7 +5,7 @@ import prisma from 'utils/prisma'
 import utilGenerateId from 'utils/generateId'
 
 const PagesApiAuth = async (req, res) => {
-	const { spaceId } = req.query
+	const { spaceId1, spaceId2 } = req.body
 
 	const userId = utilGenerateId()
 
@@ -14,7 +14,7 @@ const PagesApiAuth = async (req, res) => {
 			// --- PUBLIC ID ---
 			userId,
 			// --- RELATIONS ---
-			Spaces: { create: { spaceId } }
+			Spaces: { createMany: [{ spaceId: spaceId1 }, { spaceId: spaceId2 }] }
 		}
 	})
 
