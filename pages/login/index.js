@@ -11,6 +11,7 @@ const PagesLogin = () => {
 	useEffect(() => {
 		;(async () => {
 			if (!window.localStorage.getItem('spaceId') || !getCookie('userId')) {
+				// Spaces are used a user’s different areas of concern. For example, a user might have a space for a personal to-do list and a space for a shared to-do list
 				const spaceId1 = utilGenerateId()
 				const spaceId2 = utilGenerateId()
 
