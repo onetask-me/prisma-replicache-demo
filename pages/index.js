@@ -1,4 +1,5 @@
 // Packages
+import { useState, useEffect } from 'react'
 import { useSubscribe } from 'replicache-react'
 // Utilities
 import utilGenerateId from 'utils/generateId'
@@ -8,9 +9,16 @@ import useReplicache from 'hooks/replicache'
 import useSignInRequired from 'hooks/signInRequired'
 
 const PagesHome = () => {
-	useSignInRequired()
+	const [spaceId, setSpaceId] = useState(null)
+	const [userId, setUserId] = useState(null)
 
-	const [demoTodoSequence, setDemoTodoSequence] = useState(0)
+	useEffect(() => {
+		setSpaceId(window.localStorage.getItem('spaceId'))
+
+		setUserId(getCookie('userId'))
+	}, [])
+
+	useSignInRequired()
 
 	const { data: rep } = useReplicache()
 
@@ -20,15 +28,18 @@ const PagesHome = () => {
 
 	return (
 		<div>
+			<h1>Home</h1>
+
+			<div>User ID: {userId}</div>
+			<div>Space ID: {spaceId}</div>
+
 			<button
 				onClick={() => {
 					rep.mutate.create({
 						todoId: utilGenerateId(),
-						name: `To-do #${demoTodoSequence}`,
+						name: `Task #${todos?.length + 1}`,
 						sortOrder: 0
 					})
-
-					setDemoTodoSequence(prev => prev + 1)
 				}}
 			>
 				Create new
@@ -41,7 +52,10 @@ const PagesHome = () => {
 							<p key={todo.todoId}>
 								<button
 									onClick={() => {
-										rep.mutate.update({ todoId: todo.todoId, name: utilGenerateId() })
+										rep.mutate.update({
+											todoId: todo.todoId,
+											name: `${todo.name} ${utilGenerateId()}`
+										})
 									}}
 								>
 									Change Name

@@ -14,11 +14,7 @@ const PagesApiAuth = async (req, res) => {
 			// --- PUBLIC ID ---
 			userId,
 			// --- RELATIONS ---
-			Spaces: {
-				create: {
-					data: { spaceId }
-				}
-			}
+			Spaces: { create: { spaceId } }
 		}
 	})
 

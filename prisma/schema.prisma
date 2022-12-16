@@ -5,9 +5,8 @@ datasource db {
 }
 
 generator js {
-  provider        = "prisma-client-js"
-  binaryTargets   = ["native"]
-  previewFeatures = ["interactiveTransactions", "referentialIntegrity"]
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
 }
 
 model Replicache {
@@ -27,6 +26,8 @@ model Space {
   Todos     Todo[] @relation("RSpaceToTodos")
   User      User   @relation("RUserToSpaces", fields: [userId], references: [userId], onDelete: Cascade)
   userId    String
+
+  @@index([userId])
 }
 
 model Todo {
@@ -43,6 +44,8 @@ model Todo {
   isDeleted        Boolean @default(false)
   name             String?
   sortOrder        Int     @default(0)
+
+  @@index([spaceId])
 }
 
 model User {
@@ -53,6 +56,4 @@ model User {
   userId    String   @unique
   // --- RELATIONS ---
   Spaces    Space[]  @relation("RUserToSpaces")
-  // --- FIELDS ---
-  email     String   @unique
 }
