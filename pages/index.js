@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useSubscribe } from 'replicache-react'
 import { useRouter } from 'next/router'
 // Utilities
+import utilResetAccount from 'utils/resetAccount'
 import utilGenerateId from 'utils/generateId'
 // Hooks
 import usePokeListener from 'hooks/pokeListener'
@@ -53,6 +54,14 @@ const PagesHome = () => {
 				Log out
 			</button>
 
+			<button
+				onClick={() => {
+					utilResetAccount({ setSpaceId, setUserId })
+				}}
+			>
+				Log out and remove cookies
+			</button>
+
 			<p>---</p>
 
 			<p>Space ID: {spaceId}</p>
@@ -75,8 +84,8 @@ const PagesHome = () => {
 				onClick={() => {
 					rep.mutate.create({
 						todoId: utilGenerateId(),
-						name: `Task #${todos?.length + 1}`,
-						sortOrder: 0
+						isDeleted: false,
+						name: `Task #${todos?.length + 1}`
 					})
 				}}
 			>
@@ -92,6 +101,7 @@ const PagesHome = () => {
 									onClick={() => {
 										rep.mutate.update({
 											todoId: todo.todoId,
+											isDeleted: false,
 											name: `${todo.name} ${utilGenerateId()}`
 										})
 									}}
@@ -99,7 +109,7 @@ const PagesHome = () => {
 									Change Name
 								</button>{' '}
 								<button onClick={async () => await rep.mutate.delete(todo.todoId)}>Delete</button>{' '}
-								<b>{todo.todoId}:</b> <span>{todo.name}</span>{' '}
+								<span>{todo.name}</span>{' '}
 							</p>
 						))
 				: null}

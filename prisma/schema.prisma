@@ -39,8 +39,6 @@ model Todo {
   Space            Space   @relation("RSpaceToTodos", fields: [spaceId], references: [spaceId], onDelete: Cascade)
   spaceId          String
   // --- FIELDS ---
-  isArchived       Boolean @default(false)
-  isDraft          Boolean @default(false)
   isDeleted        Boolean @default(false)
   name             String?
   sortOrder        Int     @default(0)

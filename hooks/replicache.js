@@ -1,8 +1,10 @@
 // Packages
 import { useState, useEffect } from 'react'
-import { getCookie, deleteCookie } from 'cookies-next'
+import { getCookie } from 'cookies-next'
 import { Replicache } from 'replicache'
 import { useRouter } from 'next/router'
+// Utilities
+import utilResetAccount from 'utils/resetAccount'
 // Mutations
 import mutationTodoCreate from 'mutations/todo/create'
 import mutationTodoDelete from 'mutations/todo/delete'
@@ -28,21 +30,16 @@ const HooksReplicache = ({ setSpaceId, setUserId, spaceId, userId }) => {
 				pushURL: `/api/replicache/push?spaceId=${spaceId}`,
 				pullURL: `/api/replicache/pull?spaceId=${spaceId}`,
 				mutators: {
-					create: (tx, args) => mutationTodoCreate(tx, args, spaceId),
-					delete: (tx, args) => mutationTodoDelete(tx, args, spaceId),
-					get: (tx, args) => mutationTodoGet(tx, args, spaceId),
-					update: (tx, args) => mutationTodoUpdate(tx, args, spaceId)
+					create: (tx, args) => mutationTodoCreate({ tx, args, spaceId }),
+					delete: (tx, args) => mutationTodoDelete({ tx, args, spaceId }),
+					get: (tx, args) => mutationTodoGet({ tx, args, spaceId }),
+					update: (tx, args) => mutationTodoUpdate({ tx, args, spaceId })
 				}
 			})
 
 			// This gets called when the push/pull API returns a `401`.
 			r.getAuth = () => {
-				deleteCookie('userId')
-				setUserId(null)
-
-				window.localStorage.removeItem('spaceId1')
-				window.localStorage.removeItem('spaceId2')
-				setSpaceId(null)
+				utilResetAccount({ setSpaceId, setUserId })
 
 				router.push('/login')
 			}

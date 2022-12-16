@@ -5,14 +5,10 @@ const UtilsApiEntriesTodoGet = async ({ spaceId, tx, userId, versionAt }) => {
 			AND: [{ versionUpdatedAt: { gt: versionAt ?? 0 } }, { spaceId }, { Space: { userId } }]
 		},
 		select: {
-			// --- SYSTEM ---
-			versionUpdatedAt: true,
 			// --- PUBLIC ID ---
 			todoId: true,
 			// --- FIELDS ---
-			isArchived: true,
 			isDeleted: true,
-			isDraft: true,
 			name: true,
 			sortOrder: true
 		}

@@ -17,10 +17,10 @@ const PagesLogin = () => {
 			) {
 				// Spaces are a user’s different areas of concern. For example, a user might have a space for a personal to-do list and a space for a shared to-do list
 				const spaceId1 = utilGenerateId()
-				const spaceId2 = utilGenerateId()
-
 				window.localStorage.setItem('spaceId1', spaceId1)
-				window.localStorage.setItem('spaceId2', spaceId1)
+
+				const spaceId2 = utilGenerateId()
+				window.localStorage.setItem('spaceId2', spaceId2)
 
 				// In this demo, we’re just using basic cookies and not implementing a secure authentication system since auth isn’t the purpose of this demo. In a production app you’d implement a secure authentication system.
 				await fetch(`/api/auth`, {

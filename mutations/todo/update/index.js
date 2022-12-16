@@ -1,4 +1,4 @@
-const MutationsTodoUpdate = async (tx, args, spaceId) => {
+const MutationsTodoUpdate = async ({ tx, args, spaceId }) => {
 	const key = `${spaceId}/todo/${args.todoId}`
 
 	const prev = await tx.get(key)

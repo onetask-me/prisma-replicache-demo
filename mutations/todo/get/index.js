@@ -1,4 +1,4 @@
-const MutationsTodoGet = async (tx, spaceId) =>
+const MutationsTodoGet = async ({ tx, args, spaceId }) =>
 	await tx
 		.scan({ prefix: `${spaceId}/todo/` })
 		.values()

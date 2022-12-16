@@ -49,15 +49,11 @@ const PagesApiReplicachePull = async (req, res) => {
 
 				if (apiEntriesTodoGet?.length)
 					patch.push(
-						...apiEntriesTodoGet.map(todo => {
-							delete todo.versionUpdatedAt
-
-							return {
-								op: !todo.isDeleted ? 'put' : 'del',
-								key: `${spaceId}/todo/${todo.todoId}`,
-								value: { ...todo }
-							}
-						})
+						...apiEntriesTodoGet.map(todo => ({
+							op: !todo.isDeleted ? 'put' : 'del',
+							key: `${spaceId}/todo/${todo.todoId}`,
+							value: { ...todo }
+						}))
 					)
 
 				return { lastMutationId, versionAt: version, patch }

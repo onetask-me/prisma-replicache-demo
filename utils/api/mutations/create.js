@@ -4,11 +4,8 @@ const UtilsApiMutationsCreate = async ({ args, spaceId, tx, versionNext }) => {
 	if (prismaTodoFindUnique) return
 
 	// Update sort order
-	await tx.todo.updateMany({
-		where: {
-			AND: [{ isArchived: false }, { isDeleted: false }, { isDraft: false }, { spaceId }]
-		},
-		data: { sortOrder: { increment: 1 } }
+	const count = await tx.todo.count({
+		where: { AND: [{ isDeleted: false }, { spaceId }] }
 	})
 
 	try {
@@ -19,7 +16,8 @@ const UtilsApiMutationsCreate = async ({ args, spaceId, tx, versionNext }) => {
 				// --- RELATIONS ---
 				Space: { connect: { spaceId } },
 				// --- FIELDS ---
-				...args
+				...args,
+				sortOrder: count
 			},
 			select: { todoId: true }
 		})
