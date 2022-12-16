@@ -1,6 +1,6 @@
 // Packages
 import { useState, useEffect } from 'react'
-import { useUser } from '@clerk/nextjs'
+import { getCookie } from 'cookies-next'
 import { Replicache } from 'replicache'
 // Mutations
 import mutationTodoCreate from 'mutations/todo/create'
@@ -9,16 +9,20 @@ import mutationTodoGet from 'mutations/todo/get'
 import mutationTodoUpdate from 'mutations/todo/update'
 
 const HooksReplicache = () => {
-	const { user } = useUser()
-
+	const [spaceId, setSpaceId] = useState(null)
+	const [userId, setUserId] = useState(null)
 	const [rep, setRep] = useState(null)
 
-	const spaceId = 'MyUniqueSpace'
+	useEffect(() => {
+		setSpaceId(window.localStorage.getItem('spaceId'))
+
+		setUserId(getCookie('userId'))
+	}, [])
 
 	useEffect(() => {
-		if (user?.id) {
+		if (userId && spaceId) {
 			const r = new Replicache({
-				name: `${user.id}/${spaceId}`,
+				name: `${userId}/${spaceId}`,
 				licenseKey: process.env.NEXT_PUBLIC_REPLICACHE,
 				pushURL: `/api/replicache/push?spaceId=${spaceId}`,
 				pullURL: `/api/replicache/pull?spaceId=${spaceId}`,
@@ -34,7 +38,7 @@ const HooksReplicache = () => {
 
 			return () => void r.close()
 		}
-	}, [user?.id, spaceId])
+	}, [spaceId, userId])
 
 	return { data: rep }
 }

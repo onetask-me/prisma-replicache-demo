@@ -1,16 +1,13 @@
 // Packages
-import { withAuth, users } from '@clerk/nextjs/api'
+import { getCookie } from 'cookies-next'
 
-const UtilsAuth = withAuth(async (req, _) => {
-	const { sessionId, userId } = req.auth
+const UtilsAuth = async (req, _) => {
+	// In this demo, we’re just using basic cookies and not implementing a secure authentication system since auth isn’t the purpose of this demo. In a production app you’d implement a secure authentication system.
+	const user = getCookie('user', { req, res })
 
-	if (!sessionId || !userId) return { error: 'not_signed_in' }
+	if (!user) return { error: 'user_not_found' }
 
-	const clerkUser = await users.getUser(userId)
-
-	if (!clerkUser) return { error: 'user_not_found' }
-
-	return { data: clerkUser }
-})
+	return { data: user }
+}
 
 export default UtilsAuth

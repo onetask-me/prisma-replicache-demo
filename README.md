@@ -1,6 +1,6 @@
 ## Replicache + Prisma Demo
 
-> Replicache Demo using Prisma and NextJS on a PlanetScale database. Authentication provided by Clerk.
+> Replicache Demo using Prisma and NextJS on a PlanetScale database.
 
 ## PlanetScale Test Database
 

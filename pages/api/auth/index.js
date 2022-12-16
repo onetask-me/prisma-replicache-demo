@@ -1,42 +1,31 @@
 // Packages
-import { withAuth, users } from '@clerk/nextjs/api'
+import { setCookie } from 'cookies-next'
 // Utilities
 import prisma from 'utils/prisma'
+import utilGenerateId from 'utils/generateId'
 
-const PagesApiAuth = withAuth(async (req, res) => {
-	const { sessionId, userId } = req.auth
-
-	if (!sessionId || !userId) return { error: 'not_signed_in' }
-
+const PagesApiAuth = async (req, res) => {
 	const { spaceId } = req.query
 
-	const clerkUser = await users.getUser(userId)
+	const userId = utilGenerateId()
 
-	if (!clerkUser) return { error: 'user_not_found' }
-
-	const email = clerkUser?.emailAddresses?.find(
-		x => x.id === clerkUser?.primaryEmailAddressId
-	)?.emailAddress
-
-	await prisma.user.upsert({
-		where: { userId: clerkUser.id },
-		create: {
+	const user = await prisma.user.create({
+		data: {
 			// --- PUBLIC ID ---
-			userId: clerkUser.id,
+			userId,
 			// --- RELATIONS ---
 			Spaces: {
-				connectOrCreate: {
-					where: { spaceId },
-					create: { spaceId }
+				create: {
+					data: { spaceId }
 				}
-			},
-			// --- FIELDS ---
-			email
-		},
-		update: { email }
+			}
+		}
 	})
 
-	res.json({ data: clerkUser })
-})
+	// In this demo, we’re just using basic cookies and not implementing a secure authentication system since auth isn’t the purpose of this demo. In a production app you’d implement a secure authentication system.
+	setCookie('userId', user?.userId, { req, res, maxAge: 60 * 6 * 24 })
+
+	res.json({ data: true })
+}
 
 export default PagesApiAuth

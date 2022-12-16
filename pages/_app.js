@@ -1,10 +1,3 @@
-// Packages
-import { ClerkProvider } from '@clerk/nextjs'
-
-const App = ({ Component, pageProps }) => (
-	<ClerkProvider {...{ ...pageProps }}>
-		<Component {...pageProps} />
-	</ClerkProvider>
-)
+const App = ({ Component, pageProps }) => <Component {...pageProps} />
 
 export default App
