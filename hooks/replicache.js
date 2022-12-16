@@ -1,16 +1,17 @@
 // Packages
 import { useState, useEffect } from 'react'
-import { getCookie } from 'cookies-next'
+import { getCookie, deleteCookie } from 'cookies-next'
 import { Replicache } from 'replicache'
+import { useRouter } from 'next/router'
 // Mutations
 import mutationTodoCreate from 'mutations/todo/create'
 import mutationTodoDelete from 'mutations/todo/delete'
 import mutationTodoGet from 'mutations/todo/get'
 import mutationTodoUpdate from 'mutations/todo/update'
 
-const HooksReplicache = () => {
-	const [spaceId, setSpaceId] = useState(null)
-	const [userId, setUserId] = useState(null)
+const HooksReplicache = ({ setSpaceId, setUserId, spaceId, userId }) => {
+	const router = useRouter()
+
 	const [rep, setRep] = useState(null)
 
 	useEffect(() => {
@@ -33,6 +34,18 @@ const HooksReplicache = () => {
 					update: (tx, args) => mutationTodoUpdate(tx, args, spaceId)
 				}
 			})
+
+			// This gets called when the push/pull API returns a 401.
+			r.getAuth = () => {
+				// In case the user is logged out, we need to delete the cookie.
+				deleteCookie('userId')
+				setUserId(null)
+
+				window.localStorage.removeItem('spaceId')
+				setSpaceId(null)
+
+				router.push('/auth')
+			}
 
 			setRep(r)
 

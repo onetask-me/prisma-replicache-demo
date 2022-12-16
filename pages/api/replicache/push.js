@@ -74,7 +74,7 @@ const PagesApiReplicachePush = async (req, res) => {
 	} catch (err) {
 		console.error(err)
 
-		return res.status(500).json({ error: err.message })
+		return res.status(401).json({ error: err.message })
 	}
 }
 

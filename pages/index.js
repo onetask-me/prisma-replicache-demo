@@ -1,22 +1,21 @@
 // Packages
-import { PushError, PullError } from 'replicache'
+import { useState } from 'react'
 import { useSubscribe } from 'replicache-react'
+import { useRouter } from 'next/router'
+import { deleteCookie } from 'cookies-next'
 // Utilities
 import utilGenerateId from 'utils/generateId'
 // Hooks
-import useGetUserIdAndSpaceId from 'hooks/getUserIdAndSpaceId'
 import usePokeListener from 'hooks/pokeListener'
 import useReplicache from 'hooks/replicache'
-import useSignInRequired from 'hooks/signInRequired'
 
 const PagesHome = () => {
-	useSignInRequired()
+	const router = useRouter()
 
-	const {
-		data: { spaceId, userId }
-	} = useGetUserIdAndSpaceId()
+	const [spaceId, setSpaceId] = useState(null)
+	const [userId, setUserId] = useState(null)
 
-	const { data: rep } = useReplicache()
+	const { data: rep } = useReplicache({ setSpaceId, setUserId, spaceId, userId })
 
 	usePokeListener({ rep })
 
@@ -26,7 +25,18 @@ const PagesHome = () => {
 		[rep]
 	)
 
-	console.log({ PushError, PullError })
+	if (!spaceId || !userId)
+		return (
+			<div>
+				<button
+					onClick={() => {
+						router.push('/auth')
+					}}
+				>
+					Log in
+				</button>
+			</div>
+		)
 
 	return (
 		<div>
@@ -45,6 +55,18 @@ const PagesHome = () => {
 				}}
 			>
 				Create a new task
+			</button>
+
+			<button
+				onClick={() => {
+					deleteCookie('userId')
+					setUserId(null)
+
+					window.localStorage.removeItem('spaceId')
+					setSpaceId(null)
+				}}
+			>
+				Log out
 			</button>
 
 			{todos?.some(x => x)
