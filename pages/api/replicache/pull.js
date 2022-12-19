@@ -1,11 +1,11 @@
 // Packages
 import { Prisma } from '@prisma/client'
 // Utilities
-import prisma from 'utils/prisma'
+import prisma from 'utils/api/prisma'
 import utilApiEntriesTodoGet from 'utils/api/entries/todoGet'
 import utilApiLastMutationIdGet from 'utils/api/lastMutationIdGet'
 import utilApiVersionGet from 'utils/api/versionGet'
-import utilAuth from 'utils/auth'
+import utilAuth from 'utils/api/auth'
 
 const PagesApiReplicachePull = async (req, res) => {
 	console.log('\nPull: ***', req.body, '***\n')

@@ -1,14 +1,14 @@
 // Packages
 import { Prisma } from '@prisma/client'
 // Utilities
-import prisma from 'utils/prisma'
+import prisma from 'utils/api/prisma'
 import utilApiLastMutationIdGet from 'utils/api/lastMutationIdGet'
 import utilApiLastMutationIdSave from 'utils/api/lastMutationIdSave'
 import utilApiVersionGet from 'utils/api/versionGet'
 import utilApiVersionSave from 'utils/api/versionSave'
 import utilApiMutations from 'utils/api/mutations'
 import utilApiPokeSend from 'utils/api/pokeSend'
-import utilAuth from 'utils/auth'
+import utilAuth from 'utils/api/auth'
 
 const PagesApiReplicachePush = async (req, res) => {
 	console.log('\nPush: ***', req.body, '***\n')

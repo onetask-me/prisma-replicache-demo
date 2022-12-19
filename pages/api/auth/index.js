@@ -1,7 +1,7 @@
 // Packages
 import { setCookie } from 'cookies-next'
 // Utilities
-import prisma from 'utils/prisma'
+import prisma from 'utils/api/prisma'
 import utilGenerateId from 'utils/generateId'
 
 const PagesApiAuth = async (req, res) => {
