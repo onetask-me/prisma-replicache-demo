@@ -2,9 +2,9 @@
 import { Prisma } from '@prisma/client'
 // Utilities
 import prisma from 'utils/api/prisma'
-import utilApiEntriesTodoGet from 'utils/api/entries/todoGet'
-import utilApiLastMutationIdGet from 'utils/api/lastMutationIdGet'
-import utilApiVersionGet from 'utils/api/versionGet'
+import utilApiEntriesTodoGet from 'utils/api/replicache/entries/todoGet'
+import utilApiLastMutationIdGet from 'utils/api/replicache/client/lastMutationIdGet'
+import utilApiVersionGet from 'utils/api/replicache/space/versionGet'
 import utilAuth from 'utils/api/auth'
 
 const PagesApiReplicachePull = async (req, res) => {

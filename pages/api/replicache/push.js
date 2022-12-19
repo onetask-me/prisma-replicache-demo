@@ -2,12 +2,12 @@
 import { Prisma } from '@prisma/client'
 // Utilities
 import prisma from 'utils/api/prisma'
-import utilApiLastMutationIdGet from 'utils/api/lastMutationIdGet'
-import utilApiLastMutationIdSave from 'utils/api/lastMutationIdSave'
-import utilApiVersionGet from 'utils/api/versionGet'
-import utilApiVersionSave from 'utils/api/versionSave'
-import utilApiMutations from 'utils/api/mutations'
-import utilApiPokeSend from 'utils/api/pokeSend'
+import utilApiLastMutationIdGet from 'utils/api/replicache/client/lastMutationIdGet'
+import utilApiLastMutationIdSave from 'utils/api/replicache/client/lastMutationIdSave'
+import utilApiVersionGet from 'utils/api/replicache/space/versionGet'
+import utilApiVersionSave from 'utils/api/replicache/space/versionSave'
+import utilApiMutations from 'utils/api/replicache/mutations'
+import utilApiPokeSend from 'utils/api/poke/send'
 import utilAuth from 'utils/api/auth'
 
 const PagesApiReplicachePush = async (req, res) => {

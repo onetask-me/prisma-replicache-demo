@@ -1,7 +1,7 @@
 // Utilities
-import utilApiMutationsCreate from 'utils/api/mutations/create'
-import utilApiMutationsDelete from 'utils/api/mutations/delete'
-import utilApiMutationsUpdate from 'utils/api/mutations/update'
+import utilApiMutationsCreate from 'utils/api/replicache/mutations/create'
+import utilApiMutationsDelete from 'utils/api/replicache/mutations/delete'
+import utilApiMutationsUpdate from 'utils/api/replicache/mutations/update'
 
 const UtilsApiMutations = async ({ lastMutationId, mutations, spaceId, tx, versionNext }) => {
 	let nextMutationId = lastMutationId
