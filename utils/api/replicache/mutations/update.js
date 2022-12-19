@@ -6,7 +6,7 @@ const UtilsApiMutationsUpdate = async ({ args, spaceId, tx, versionNext }) => {
 				// --- SYSTEM ---
 				versionUpdatedAt: versionNext,
 				// --- RELATIONS ---
-				Space: { connect: { spaceId } },
+				space: { connect: { spaceId } },
 				// --- FIELDS ---
 				...args
 			},

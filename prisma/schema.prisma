@@ -23,8 +23,8 @@ model Space {
   // --- PUBLIC ID ---
   spaceId   String @unique
   // --- RELATIONS ---
-  Todos     Todo[] @relation("RSpaceToTodos")
-  User      User   @relation("RUserToSpaces", fields: [userId], references: [userId], onDelete: Cascade)
+  todos     Todo[] @relation("RSpaceToTodos")
+  user      User   @relation("RUserToSpaces", fields: [userId], references: [userId], onDelete: Cascade)
   userId    String
 
   @@index([userId])
@@ -36,7 +36,7 @@ model Todo {
   // --- PUBLIC ID ---
   todoId           String  @unique
   // --- RELATIONS ---
-  Space            Space   @relation("RSpaceToTodos", fields: [spaceId], references: [spaceId], onDelete: Cascade)
+  space            Space   @relation("RSpaceToTodos", fields: [spaceId], references: [spaceId], onDelete: Cascade)
   spaceId          String
   // --- FIELDS ---
   isDeleted        Boolean @default(false)
@@ -53,5 +53,5 @@ model User {
   // --- PUBLIC ID ---
   userId    String   @unique
   // --- RELATIONS ---
-  Spaces    Space[]  @relation("RUserToSpaces")
+  spaces    Space[]  @relation("RUserToSpaces")
 }
