@@ -9,20 +9,20 @@ const PagesLogin = () => {
 	const router = useRouter()
 
 	useEffect(() => {
-		;(async () => {
-			if (
-				!window.localStorage.getItem('spaceId1') ||
-				!window.localStorage.getItem('spaceId2') ||
-				!getCookie('userId')
-			) {
-				// Spaces are a user’s different areas of concern. For example, a user might have a space for a personal to-do list and a space for a shared to-do list
-				const spaceId1 = utilGenerateId()
-				window.localStorage.setItem('spaceId1', spaceId1)
+		if (
+			!window.localStorage.getItem('spaceId1') ||
+			!window.localStorage.getItem('spaceId2') ||
+			!getCookie('userId')
+		) {
+			// Spaces are a user’s different areas of concern. For example, a user might have a space for a personal to-do list and a space for a shared to-do list
+			const spaceId1 = utilGenerateId()
+			window.localStorage.setItem('spaceId1', spaceId1)
 
-				const spaceId2 = utilGenerateId()
-				window.localStorage.setItem('spaceId2', spaceId2)
+			const spaceId2 = utilGenerateId()
+			window.localStorage.setItem('spaceId2', spaceId2)
 
-				// In this demo, we’re just using basic cookies and not implementing a secure authentication system since auth isn’t the purpose of this demo. In a production app you’d implement a secure authentication system.
+			// In this demo, we’re just using basic cookies and not implementing a secure authentication system since auth isn’t the purpose of this demo. In a production app you’d implement a secure authentication system.
+			;(async () => {
 				await fetch(`/api/auth`, {
 					method: 'POST',
 					headers: {
@@ -31,10 +31,10 @@ const PagesLogin = () => {
 					},
 					body: JSON.stringify({ spaceId1, spaceId2 })
 				})
-			}
+			})()
+		}
 
-			router.push('/')
-		})()
+		router.push('/')
 	}, [])
 
 	return <></>
