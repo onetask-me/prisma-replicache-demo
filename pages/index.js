@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import utilResetAccount from 'utils/resetAccount'
 import utilGenerateId from 'utils/generateId'
 // Hooks
+import useOnLoad from 'hooks/onLoad'
 import usePokeListener from 'hooks/pokeListener'
 import useReplicache from 'hooks/replicache'
 
@@ -14,6 +15,8 @@ const PagesHome = () => {
 
 	const [spaceId, setSpaceId] = useState(null)
 	const [userId, setUserId] = useState(null)
+
+	useOnLoad({ setSpaceId, setUserId })
 
 	const { data: rep } = useReplicache({ setSpaceId, setUserId, spaceId, userId })
 

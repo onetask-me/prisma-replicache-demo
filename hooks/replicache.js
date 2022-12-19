@@ -1,6 +1,5 @@
 // Packages
 import { useState, useEffect } from 'react'
-import { getCookie } from 'cookies-next'
 import { Replicache } from 'replicache'
 import { useRouter } from 'next/router'
 // Utilities
@@ -15,12 +14,6 @@ const HooksReplicache = ({ setSpaceId, setUserId, spaceId, userId }) => {
 	const router = useRouter()
 
 	const [rep, setRep] = useState(null)
-
-	useEffect(() => {
-		setSpaceId(window.localStorage.getItem('spaceId1'))
-
-		setUserId(getCookie('userId'))
-	}, [])
 
 	useEffect(() => {
 		if (userId && spaceId) {
