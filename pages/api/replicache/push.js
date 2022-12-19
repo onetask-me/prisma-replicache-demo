@@ -7,7 +7,7 @@ import utilApiLastMutationIdSave from 'utils/api/replicache/client/lastMutationI
 import utilApiVersionGet from 'utils/api/replicache/space/versionGet'
 import utilApiVersionSave from 'utils/api/replicache/space/versionSave'
 import utilApiMutations from 'utils/api/replicache/mutations'
-import utilApiPokeSend from 'utils/api/poke/send'
+import utilApiPokeSend from 'utils/api/replicache/poke/send'
 import utilAuth from 'utils/api/auth'
 
 const PagesApiReplicachePush = async (req, res) => {
