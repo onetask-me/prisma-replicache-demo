@@ -1,16 +1,18 @@
-const UtilsApiLastMutationIdGet = async ({ replicacheId, tx }) => {
+const UtilsApiLastMutationIdGet = async ({ replicacheClientId, tx }) => {
 	let lastMutationId
 
-	const prismaReplicacheFindUnique = await tx.replicache.findUnique({
-		where: { replicacheId },
+	const prismaReplicacheFindUnique = await tx.replicacheClient.findUnique({
+		where: { replicacheClientId },
 		select: { lastMutationId: true }
 	})
 
 	if (prismaReplicacheFindUnique) lastMutationId = prismaReplicacheFindUnique.lastMutationId
 	else {
-		await tx.replicache.create({
+		await tx.replicacheClient.create({
 			data: {
-				replicacheId,
+				// --- PUBLIC ID ---
+				replicacheClientId,
+				// --- FIELDS ---
 				lastMutationId: 0
 			},
 			select: { lastMutationId: true }

@@ -35,7 +35,7 @@ const PagesApiReplicachePush = async (req, res) => {
 
 				// #2. Get last mutation Id for client
 				let { data: lastMutationId } = await utilApiLastMutationIdGet({
-					replicacheId: clientID,
+					replicacheClientId: clientID,
 					tx
 				})
 
@@ -49,7 +49,7 @@ const PagesApiReplicachePush = async (req, res) => {
 				})
 
 				// #4. Save mutation Id to Client
-				await utilApiLastMutationIdSave({ replicacheId: clientID, nextMutationId, tx })
+				await utilApiLastMutationIdSave({ replicacheClientId: clientID, nextMutationId, tx })
 
 				// #5. Save new version to Space
 				const { data: versionUpdated } = await utilApiVersionSave({

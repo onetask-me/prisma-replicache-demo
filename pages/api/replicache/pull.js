@@ -32,7 +32,10 @@ const PagesApiReplicachePull = async (req, res) => {
 				const { data: version } = await utilApiVersionGet({ tx, spaceId, userId })
 
 				// #2. Get last mutation Id for the current replicache client
-				let { data: mutationId } = await utilApiLastMutationIdGet({ replicacheId: clientID, tx })
+				let { data: mutationId } = await utilApiLastMutationIdGet({
+					replicacheClientId: clientID,
+					tx
+				})
 
 				lastMutationId = mutationId
 

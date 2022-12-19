@@ -9,11 +9,11 @@ generator js {
   binaryTargets = ["native"]
 }
 
-model Replicache {
+model ReplicacheClient {
   // --- PUBLIC ID ---
-  replicacheId   String @unique
+  replicacheClientId String @unique
   // --- FIELDS ---
-  lastMutationId Int    @default(0)
+  lastMutationId     Int    @default(0)
 }
 
 // Replicache syncs “spaces”, i.e. groups of related data (such as to-dos and their connected categories)
