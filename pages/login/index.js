@@ -34,8 +34,6 @@ const PagesLogin = () => {
 			})()
 		}
 
-		router.reload()
-
 		router.push('/')
 	}, [])
 
