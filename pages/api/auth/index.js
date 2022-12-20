@@ -19,11 +19,14 @@ const PagesApiAuth = async (req, res) => {
 					data: [{ spaceId: spaceId1 }, { spaceId: spaceId2 }]
 				}
 			}
+		},
+		select: {
+			userId: true
 		}
 	})
 
 	// In this demo, we’re just using basic cookies and not implementing a secure authentication system since auth isn’t the purpose of this demo. In a production app you’d implement a secure authentication system.
-	setCookie('userId', user?.userId, { req, res, maxAge: 60 * 6 * 24 })
+	setCookie('userId', user?.userId, { req, res })
 
 	res.json({ data: true })
 }
