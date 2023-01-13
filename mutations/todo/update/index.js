@@ -3,7 +3,7 @@ const MutationsTodoUpdate = async ({ tx, args, spaceId }) => {
 
 	const prev = await tx.get(key)
 
-	await tx.put(key, { ...prev, ...args })
+	return await tx.put(key, { ...prev, ...args })
 }
 
 export default MutationsTodoUpdate

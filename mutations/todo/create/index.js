@@ -8,7 +8,7 @@ const MutationsTodoCreate = async ({ tx, args, spaceId }) => {
 
 	const todos = await mutationTodoGet({ tx, args, spaceId })
 
-	await tx.put(key, { ...args, sortOrder: todos?.length })
+	return await tx.put(key, { ...args, sortOrder: todos?.length })
 }
 
 export default MutationsTodoCreate
