@@ -33,13 +33,20 @@ const PagesApiReplicachePush = async (req, res) => {
 
 				const versionNext = version + 1
 
-				// #2. Get last mutation Id for client
+				// #2. Save new version to Space
+				const { data: versionUpdated } = await utilApiVersionSave({
+					tx,
+					spaceId,
+					versionAt: versionNext
+				})
+
+				// #3. Get last mutation Id for client
 				let { data: lastMutationId } = await utilApiLastMutationIdGet({
 					replicacheClientId: clientID,
 					tx
 				})
 
-				// #3. Iterate mutations, increase mutation Id on each iteration, but use next version for comparison
+				// #4. Iterate mutations, increase mutation Id on each iteration, but use next version for comparison
 				const { data: nextMutationId } = await utilApiMutations({
 					lastMutationId,
 					mutations,
@@ -48,15 +55,8 @@ const PagesApiReplicachePush = async (req, res) => {
 					versionNext
 				})
 
-				// #4. Save mutation Id to Client
+				// #5. Save mutation Id to Client
 				await utilApiLastMutationIdSave({ replicacheClientId: clientID, nextMutationId, tx })
-
-				// #5. Save new version to Space
-				const { data: versionUpdated } = await utilApiVersionSave({
-					tx,
-					spaceId,
-					versionAt: versionNext
-				})
 
 				return { data: versionUpdated?.versionAt }
 			},
